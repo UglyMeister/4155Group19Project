@@ -1,0 +1,185 @@
+<html>
+<!--/Title page-->	
+<head>
+    <title>Home page</title>
+
+ 
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+    <script src="js/jzoom.min.js"></script>
+	<script src="js/main.js"></script>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+</head>
+<!--/body-->	
+<body>
+<!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->	
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="index.html"><img src="images/logo.jpg" alt="" /></a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li class="active"><a href="product-details.html">Product Details</a></li>
+            <li><a href="contact.html">Contact US</a></li>
+            <li><a href="about.html">About US</a></li>
+          </ul>
+        </div>
+      </nav>
+<!--/panel-category-products-->	
+      <section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Category</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-products panel contains the category of the products available in the store-->
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a href="#">Sportswear</a>
+									</h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a href="#">Mens</a>
+									</h4>
+								</div>
+								<div id="mens" class="panel-collapse collapse">
+								</div>
+							</div>
+							
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a href="#">Womens</a>
+
+									</h4>
+								</div>
+								<div id="womens" class="panel-collapse collapse">
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="#">Kids</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="#">Bags</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="#">Shoes</a></h4>
+								</div>
+							</div>
+						</div><!--/category-products-->				
+					</div>
+				</div>
+				
+				<div class="col-sm-9 padding-right">
+					<div class="product-details"><!--product-details-->
+						<div class="col-sm-5">
+							<div class="view-product jzoom">
+								<img src="images/product1.jpg" alt="">
+							</div>
+							<div id="similar-product" class="carousel slide" data-ride="carousel">
+								
+								  <!-- Wrapper for slides contains extra pictures for the product-->
+								    <div class="carousel-inner">
+										<div class="item">
+										  <a href=""><img src="images/similar1.jpg" alt=""></a>
+										  <a href=""><img src="images/similar2.jpg" alt=""></a>
+										  <a href=""><img src="images/similar3.jpg" alt=""></a>
+										</div>
+										<div class="item active left">
+										  <a href=""><img src="images/similar1.jpg" alt=""></a>
+										  <a href=""><img src="images/similar2.jpg" alt=""></a>
+										  <a href=""><img src="images/similar3.jpg" alt=""></a>
+										</div>
+										<div class="item next left">
+										  <a href=""><img src="images/similar1.jpg" alt=""></a>
+										  <a href=""><img src="images/similar2.jpg" alt=""></a>
+										  <a href=""><img src="images/similar3.jpg" alt=""></a>
+										</div>
+										
+									</div>
+
+								  <a class="left item-control" href="#similar-product" data-slide="prev">
+									<i class="fa fa-angle-left"></i>
+								  </a>
+								  <a class="right item-control" href="#similar-product" data-slide="next">
+									<i class="fa fa-angle-right"></i>
+								  </a>
+
+							</div>
+
+						</div>
+						<div class="col-sm-7">
+							<div class="product-information"><!--/product-information of the product that the user has selected and want to add that in the cart after reviewing more pictures, ratings and information of the product-->
+								<h2>Anne Klein Sleeveless Colorblock Scuba</h2>
+								<p>Web ID: 1089772</p>
+								<span>
+									<span id="price-tag">US $59</span>
+									<label>Quantity:</label>
+									<input type="text" value="3" id="product-size">
+									<button type="button" class="btn btn-fefault cart">
+										<i class="fa fa-shopping-cart"></i>
+										Add to cart
+									</button>
+								</span>
+								<p><b>Availability:</b></p>
+								<p id = "availability">In Stock</p>
+								<p><b>Condition:</b></p>
+								<p id ="condition">New</p>
+								<p><b>Brand:</b></p>
+								<p id= "store">E-SHOPPER</p>
+								<button type="button" id="get-discounted-price" onclick= "getbulkPrice()" class="btn btn-fefault cart">
+										Get Discounted Price
+								</button>
+							</div><!--/product-information-->
+						</div>
+					</div><!--/product-details-->
+			</div>
+		</div>
+	</section>
+	    <footer id="footer">
+        <!--Footer contains the link to Online Help, Contact us, Order status and change of location. Some of the links in the footer are actually linked to the webpage-->
+        <div class="footer-widget">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="about.html">Online Help</a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="cart.html">Order Status</a></li>
+                                <li><a href="#">Change Location</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--/Footer-->
+    <script>
+        $('.jzoom').jzoom({bgColor: "#222"});
+    </script><script type="text/javascript">
+
+</body>
+
+</html>
