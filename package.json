@@ -1,0 +1,25 @@
+{
+  "name": "4155group19project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UglyMeister/4155Group19Project.git"
+  },
+  "author": "Fred York",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UglyMeister/4155Group19Project/issues"
+  },
+  "homepage": "https://github.com/UglyMeister/4155Group19Project#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0"
+  }
+}
