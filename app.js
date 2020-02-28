@@ -3,6 +3,7 @@
 
 var createError = require('http-errors');
 var express = require('express');
+var port = process.env.PORT || 8080;
 var path = require('path');
 //var cookieParser = require('cookie-parser'); ADD THIS LATER
 var mainController = require('./routes/mainController');
@@ -52,7 +53,7 @@ app.use(function(err, req, res, next){
     res.render('error');
 });
 //FOR LOCAL TESTING UNCOMMENT THIS
-//app.listen(8080, '127.0.0.1');
-app.listen(8080, function(){
+//app.listen(port, '127.0.0.1');
+app.listen(port, function(){
     console.log('listening live');
 });
