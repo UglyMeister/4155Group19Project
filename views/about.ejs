@@ -3,25 +3,12 @@
 <head>
     <title>Home page</title>
 
- 
-    <link href="bootstrap.min.css" rel="stylesheet">
-	<link href="style1.css" rel="stylesheet">
+ <% include ./includes/head.ejs %>
 </head>
 
 <body>
 <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->   
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="index.html"><img src="1.jpg" alt="" height=35px width=35px/></a>
-          </div>
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="contact.html">Contact US</a></li>
-            <li class="active"><a href="about.html">About US</a></li>
-          </ul>
-        </div>
-      </nav>
+    <% include ./includes/nav.ejs %>
 
 	  <div id="contact-page" class="container">
     	<div class="bg">
@@ -84,8 +71,6 @@
     </footer>
     <!--/Footer-->
     
-    <script src="jquery.js"></script>
-    <script src="bootstrap.min.js"></script>
 </body>
 
 </html>
