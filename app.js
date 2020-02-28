@@ -4,6 +4,19 @@
 var createError = require('http-errors');
 var express = require('express');
 var port = process.env.PORT || 8080;
+var db = require('mysql');
+
+var con = db.createConnection({
+    host: "localhostus-cdbr-iron-east-04.cleardb.net/heroku_212b0f1187bb9b8",
+    user: "b2d8d531ab277f",
+    password: "cb5a92bf"
+
+});
+
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
 var path = require('path');
 //var cookieParser = require('cookie-parser'); ADD THIS LATER
 var mainController = require('./routes/mainController');
