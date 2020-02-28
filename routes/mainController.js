@@ -16,7 +16,7 @@ router.get("/*", function(req, res, next){
     next();
 });
 
-router.get('/index', function(req, res, next){
+router.get('/', function(req, res, next){
     //render homepage
     console.log('render index');
     res.render('index');
@@ -27,5 +27,11 @@ router.get('/help', function(req, res, next){
     console.log('render help');
     res.render('help');
 });
+
+router.get('/about', function(req,res,next){
+    //render about page
+    console.log('render about');
+    res.render('about');
+})
 
 module.exports = router;

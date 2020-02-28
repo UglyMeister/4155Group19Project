@@ -30,7 +30,7 @@ var session = require('express-session');
 //var cookieParser = require('cookie-parser');
 
 //app.use(cookieParser());
-//app.use(session({secret: "the secret"}));
+app.use(session({secret: "the secret"}));
 
 //routes
 //define teh routes and add the controllers

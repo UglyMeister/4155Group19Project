@@ -2,28 +2,14 @@
 <!--/Product Details page-->  
 <head>
     <title>Smart Boss</title> 
-    <link href="bootstrap.min.css" rel="stylesheet">
-	<link href="style1.css" rel="stylesheet">
-    <script src="jquery.js"></script>
-	<script src="bootstrap.min.js"></script>
+    <% include ./includes/head.ejs %>
 
 </head>
 <!--/body-->    
 <body>
 <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->   
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="index.html"><img src="/resources/1.jpg" alt="" height=35px width=35px/></a>
+    <% include ./includes/nav.ejs %>    
 
-          </div>
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="help.html">Help</a></li>
-          </ul>
-        </div>
-    </nav>
     <main>
         <section id="login">
             <h1>Login</h1>
