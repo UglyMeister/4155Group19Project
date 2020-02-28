@@ -53,6 +53,6 @@ app.use(function(err, req, res, next){
 });
 //FOR LOCAL TESTING UNCOMMENT THIS
 //app.listen(8080, '127.0.0.1');
-app.listen(port, function(){
+app.listen(8080, function(){
     console.log('listening live');
 });
