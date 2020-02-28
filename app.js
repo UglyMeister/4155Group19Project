@@ -52,8 +52,6 @@ app.use(function(err, req, res, next){
     res.status(err.status || 500);
     res.render('error');
 });
-//FOR LOCAL TESTING UNCOMMENT THIS
-//app.listen(port, '127.0.0.1');
 app.listen(port, function(){
     console.log('listening live');
 });
