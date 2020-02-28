@@ -4,7 +4,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser'); ADD THIS LATER
 
 var app = express();
 
@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 
 //app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+//app.use(cookieParser());
 
 //set the path for static resources to be accessible
 app.use('/resources', express.static('resources'));
@@ -26,10 +26,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //session handling
 var session = require('express-session');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser');
 
-app.use(cookieParser());
-app.use(session({secret: "the secret"}));
+//app.use(cookieParser());
+//app.use(session({secret: "the secret"}));
 
 //routes
 //define teh routes and add the controllers
