@@ -5,6 +5,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 //var cookieParser = require('cookie-parser'); ADD THIS LATER
+var mainController = require('./routes/mainController');
 
 var app = express();
 
@@ -33,6 +34,7 @@ var session = require('express-session');
 
 //routes
 //define teh routes and add the controllers
+app.use('/', mainController);
 
 //catch 404 and forward to error handler
 app.use(function(req, res, next){
