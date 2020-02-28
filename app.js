@@ -51,5 +51,8 @@ app.use(function(err, req, res, next){
     res.status(err.status || 500);
     res.render('error');
 });
-
-app.listen(8080, '127.0.0.1');
+//FOR LOCAL TESTING UNCOMMENT THIS
+//app.listen(8080, '127.0.0.1');
+app.listen(port, function(){
+    console.log('listening live');
+});
