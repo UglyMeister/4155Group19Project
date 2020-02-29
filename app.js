@@ -8,6 +8,10 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r2hv5571');
 var db = mongoose.connection;
 
+db.once('open', function(){
+    console.log('Connected to database');
+});
+
 var employeeSchema = new mongoose.Schema({
     name: String,
     id: Number,
