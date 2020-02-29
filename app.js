@@ -4,19 +4,21 @@
 var createError = require('http-errors');
 var express = require('express');
 var port = process.env.PORT || 8080;
-var db = require('mysql');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r2hv5571');
+var db = mongoose.connection;
 
-var con = db.createConnection({
-    host: "localhostus-cdbr-iron-east-04.cleardb.net/heroku_212b0f1187bb9b8",
-    user: "b2d8d531ab277f",
-    password: "cb5a92bf"
-
+var employeeSchema = new mongoose.Schema({
+    name: String,
+    id: Number,
+    email: String,
+    uname: String,
+    pass: String,
+    groupIDs: Array,
+    monAvail: Array
 });
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+var EmployeeModel = db.model('Employee', employeeSchema);
 var path = require('path');
 //var cookieParser = require('cookie-parser'); ADD THIS LATER
 var mainController = require('./routes/mainController');
