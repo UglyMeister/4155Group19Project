@@ -66,6 +66,18 @@ router.get('/about', function(req,res,next){
     //render about page
     console.log('render about');
     res.render('about');
-})
+});
+
+router.get('/employee', function(req,res,next){
+    //render employee view
+    console.log('render employee');
+    res.render('employee');
+});
+
+router.get('/employer', function(req,res,next){
+    //render employer view
+    console.log('render employer');
+    res.render('employer');
+});
 
 module.exports = router;

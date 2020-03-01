@@ -1,0 +1,52 @@
+<html>
+<!--/Product Details page-->  
+<head>
+    <title>Employee</title> 
+    <%- include('includes/head.ejs') %>
+
+</head>
+<!--/body-->    
+<body>
+<!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->   
+    <%- include('includes/nav.ejs') %>    
+
+    <main>
+        <section id="availability">
+            <h1>Input your availability</h1>
+            <form action="asdf">
+                <label for="monday">Monday:</label>
+                <input type="text" id="monday" name="monday" required></br>
+                <label for="tuesday">Tuesday:</label>
+                <input type="text" id="tuesday" name="tuesday" required></br>
+                <label for="wednesday">Wednesday:</label>
+                <input type="text" id="wednesday" name="wednesday" required></br>
+                <label for="thursday">Thursday:</label>
+                <input type="text" id="thursday" name="thursday" required></br>
+                <label for="friday">Friday:</label>
+                <input type="text" id="friday" name="friday" required></br>
+                <label for="saturday">Saturday:</label>
+                <input type="text" id="saturday" name="saturday" required></br>
+                <label for="sunday">Sunday:</label>
+                <input type="text" id="sunday" name="sunday" required></br>
+                <input type="submit" value="Submit">
+            </form>
+
+        </section>
+        <section id="skills">
+            <h1>Check your skills among the following</h1>
+
+            <form action="/action_page.php">
+                <input type="checkbox" id="cooking" name="cooking" >
+                <label for="cooking"> Cooking</label><br>
+                <input type="checkbox" id="cleaning" name="cleaning" >
+                <label for="cleaning"> Cleaning</label><br>
+                <input type="checkbox" id="early morning prep" name="early morning prep" >
+                <label for="early morning prep">Early morning preparer</label><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </section>
+    </main>
+    <footer id="footer">
+    </footer>
+    </body>
+</html>
