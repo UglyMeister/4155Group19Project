@@ -14,7 +14,13 @@ var employeeSchema = new mongoose.Schema({
     uname: String,
     pass: String,
     groupIDs: [],
-    monAvail: []
+    monAvail: [],
+    tueAvail: [],
+    wedAvail: [],
+    thAvail: [],
+    friAvail: [],
+    satAvail: [],
+    sunAvail: []
 },{collection: 'employee'});
 
 var EmployeeModel = db.model('Employee', employeeSchema);

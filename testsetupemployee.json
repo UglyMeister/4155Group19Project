@@ -1,1 +1,1 @@
-{"name": "Fred York","id": 1,"email": "fredwashere53@gmail.com","uname": "uglymeister","pass": "admin","groupIDs": [1],"monAvail": [1200, 1600]}
+{"name": "Fred York","id": 1,"email": "fredwashere53@gmail.com","uname": "uglymeister","pass": "admin","groupIDs": [1],"monAvail": [1200, 1600], "tueAvail": [1200, 1600], "wedAvail": [1200, 1600], "thAvail": [1200, 1600], "friAvail": [1200, 1600], "satAvail": [1200, 1600], "sunAvail": [1200, 1600]}
