@@ -4,25 +4,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var port = process.env.PORT || 8080;
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r2hv5571');
-var db = mongoose.connection;
 
-db.once('open', function(){
-    console.log('Connected to database');
-});
-
-var employeeSchema = new mongoose.Schema({
-    name: String,
-    id: Number,
-    email: String,
-    uname: String,
-    pass: String,
-    groupIDs: Array,
-    monAvail: Array
-});
-
-var EmployeeModel = db.model('Employee', employeeSchema);
 var path = require('path');
 //var cookieParser = require('cookie-parser'); ADD THIS LATER
 var mainController = require('./routes/mainController');
