@@ -13,8 +13,8 @@ var employeeSchema = new mongoose.Schema({
     email: String,
     uname: String,
     pass: String,
-    groupIDs: Array,
-    monAvail: Array
+    groupIDs: [],
+    monAvail: []
 },{collection: 'employee'});
 
 var EmployeeModel = db.model('Employee', employeeSchema);
