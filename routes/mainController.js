@@ -24,6 +24,28 @@ var employeeSchema = new mongoose.Schema({
     sunAvail: []
 },{collection: 'employee'});
 
+var employerSchema = new mongoose.Schema({
+    name: String,
+    id: Number,
+    email: String,
+    uname: String,
+    pass: String,
+    groupIDs: []
+},{collection: 'employer'});
+
+var skillsSchema = new mongoose.Schema({
+    groupID: Number,
+    userID: Number,
+    skills: []
+},{collection: 'skills'});
+
+var groupsSchema = new mongoose.Schema({
+    groupID: Number,
+    ownerID: Number,
+    memberIDs: [],
+    skills: []
+},{collection: 'groups'});
+
 var EmployeeModel = db.model('Employee', employeeSchema);
 
 //var mysql = require('mysql');
