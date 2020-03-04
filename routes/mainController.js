@@ -54,24 +54,28 @@ router.get("/*", function(req, res, next){
 
 router.get('/', function(req, res, next){
     //render homepage
+    updateLocalDB();
     console.log('render index');
     res.render('index', {data:''});
 });
 
 router.get('/help', function(req, res, next){
     //render help page
+    updateLocalDB();
     console.log('render help');
     res.render('help');
 });
 
 router.get('/about', function(req,res,next){
     //render about page
+    updateLocalDB();
     console.log('render about');
     res.render('about');
 });
 
 router.get('/employee', function(req,res,next){
     //render employee view
+    updateLocalDB();
     var uname;
     var pass;
     console.log('uname');
@@ -82,6 +86,10 @@ router.get('/employee', function(req,res,next){
         console.log('not null uname or pass');
         uname = req.query.uname;
         pass = req.query.pass;
+        //no need to use this anymore
+        //by loading the db contents into a js variable we can access the data much faster and easier
+        //things will just be slighly different whenever we need to add users to the database
+        //will require a new addition to the database and for the local variable to be updated
         /*theDB.getOne(EmployeeModel, uname).then(function(doc){
             docPass = doc[0].pass;
              if(docPass == pass){
@@ -118,8 +126,16 @@ router.get('/employee', function(req,res,next){
 
 router.get('/employer', function(req,res,next){
     //render employer view
+    updateLocalDB();
     console.log('render employer');
     res.render('employer');
 });
+
+var updateLocalDB = function(){
+    theDB.getAll(EmployeeModel).then(function(doc){
+        //console.log(JSON.stringify(doc));
+        employeeList = doc;
+    });
+}
 
 module.exports = router;
