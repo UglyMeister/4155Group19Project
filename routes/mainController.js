@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var theDB = require('../util/db');
+var employeeList;
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r2hv5571', {useNewUrlParser: true});
@@ -34,6 +35,7 @@ db.once('open', function(){
     //can be accessed and data can be pulled from it
     theDB.getAll(EmployeeModel).then(function(doc){
         console.log(JSON.stringify(doc));
+        employeeList = doc;
     });
 });
 
@@ -53,7 +55,7 @@ router.get("/*", function(req, res, next){
 router.get('/', function(req, res, next){
     //render homepage
     console.log('render index');
-    res.render('index');
+    res.render('index', {data:''});
 });
 
 router.get('/help', function(req, res, next){
@@ -80,7 +82,7 @@ router.get('/employee', function(req,res,next){
         console.log('not null uname or pass');
         uname = req.query.uname;
         pass = req.query.pass;
-        theDB.getOne(EmployeeModel, uname).then(function(doc){
+        /*theDB.getOne(EmployeeModel, uname).then(function(doc){
             docPass = doc[0].pass;
              if(docPass == pass){
                    console.log('you are logged in');
@@ -89,10 +91,25 @@ router.get('/employee', function(req,res,next){
                   console.log('doc null');
                   res.render('index');
             }
-        });
+        });*/
+        for(var i=0;i<employeeList.length;i++){
+            if(employeeList[i].uname == uname){
+                console.log('found user in db');
+                if(employeeList[i].pass == pass){
+                    console.log('pass match, logging in');
+                    res.render('employee');
+                }else{
+                    //alert('incorrect password');
+                    res.render('index', {data:'incorrect password'});
+                }
+            }else{
+                //alert("user doesn't exist");
+                res.render('index', {data:'user doesnt exist'});
+            }
+        }
     }else{
         console.log('null uname or pass');
-        res.render('index');
+        res.redirect('/');
     }
     /*
     console.log('render employee');
