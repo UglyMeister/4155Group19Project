@@ -70,8 +70,33 @@ router.get('/about', function(req,res,next){
 
 router.get('/employee', function(req,res,next){
     //render employee view
+    var uname;
+    var pass;
+    console.log('uname');
+    console.log(req.query.uname);
+    console.log('pass');
+    console.log(req.query.pass);
+    if(req.query.uname != null && req.query.pass != null){
+        console.log('not null uname or pass');
+        uname = req.query.uname;
+        pass = req.query.pass;
+        theDB.getOne(EmployeeModel, uname).then(function(doc){
+            docPass = doc[0].pass;
+             if(docPass == pass){
+                   console.log('you are logged in');
+                  res.render('employee');
+             }else{
+                  console.log('doc null');
+                  res.render('index');
+            }
+        });
+    }else{
+        console.log('null uname or pass');
+        res.render('index');
+    }
+    /*
     console.log('render employee');
-    res.render('employee');
+    res.render('employee');*/
 });
 
 router.get('/employer', function(req,res,next){

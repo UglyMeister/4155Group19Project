@@ -1,9 +1,11 @@
-var getAll = function(db){
-    return promise = db.find({}).exec();
+var getAll = async function(db){
+    let promise = await db.find({}).exec();
+    return promise;
 };
 
-var getOne = function(db, uname){
-    return promise = db.find({uname: uname}).exec();
+var getOne = async function(db, uname){
+    let promise = await db.find({'uname': uname}).exec();
+    return promise;
 };
 
 var oneExists = function(uname){
