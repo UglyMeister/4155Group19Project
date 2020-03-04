@@ -3,6 +3,9 @@ var router = express.Router();
 
 var theDB = require('../util/db');
 var employeeList;
+var employerList;
+var skillsList;
+var groupsList;
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r2hv5571', {useNewUrlParser: true});
@@ -47,6 +50,9 @@ var groupsSchema = new mongoose.Schema({
 },{collection: 'groups'});
 
 var EmployeeModel = db.model('Employee', employeeSchema);
+var EmployerModel = db.model('Employer', employerSchema);
+var SkillsModel = db.model('Skills', skillsSchema);
+var GroupsModel = db.model('Groups', groupsSchema);
 
 //var mysql = require('mysql');
 
@@ -55,10 +61,22 @@ db.once('open', function(){
     //test
     //can comment the below statement out later, this proves that the db
     //can be accessed and data can be pulled from it
+    updateLocalDB();
+    /*
     theDB.getAll(EmployeeModel).then(function(doc){
         console.log(JSON.stringify(doc));
         employeeList = doc;
     });
+    theDB.getAll(EmployerModel).then(function(doc){
+        employerList = doc;
+    });
+    theDB.getAll(SkillsModel).then(function(doc){
+        skillsList = doc;
+    });
+    theDB.getAll(GroupsModel).then(function(doc){
+        groupsList = doc;
+    });
+    */
 });
 
 var viewAddress;
@@ -153,10 +171,32 @@ router.get('/employer', function(req,res,next){
     res.render('employer');
 });
 
+router.get('/signup', function(req,res,next){
+    //render signup page
+    updateLocalDB();
+    console.log('render signup');
+    res.render('signup', {data: ''});
+});
+
+router.get('/createnewuser', function(req,res,next){
+    //create a new user
+    updateLocalDB();
+    console.log('render something');
+    res.render('employer');
+});
+
 var updateLocalDB = function(){
     theDB.getAll(EmployeeModel).then(function(doc){
-        //console.log(JSON.stringify(doc));
         employeeList = doc;
+    });
+    theDB.getAll(EmployerModel).then(function(doc){
+        employerList = doc;
+    });
+    theDB.getAll(SkillsModel).then(function(doc){
+        skillsList = doc;
+    });
+    theDB.getAll(GroupsModel).then(function(doc){
+        groupsList = doc;
     });
 }
 

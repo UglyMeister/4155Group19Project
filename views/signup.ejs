@@ -1,0 +1,52 @@
+<html>
+<!--/Product Details page-->  
+<head>
+    <title>Smart Boss</title> 
+    <%- include('includes/head.ejs') %>
+       
+
+</head>
+<!--/body-->    
+<body>
+<!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->   
+    <%- include('includes/nav.ejs') %>    
+
+    <main>
+        <section id="login">
+            <h1>Signup</h1>
+            <h4><%= data %></h4>
+            <form action='/createnewuser'>
+                <div>
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required></br>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required></br>
+                </div>
+                <div>
+                    <label for="username">Username:</label>
+                    <input type="text" id="uname" name="uname" required></br>
+                </div>
+                <div>
+                    <label for="pass">Password:</label>
+                    <input type="password" id="pass" name="pass" required></br>
+                </div>
+                <div>
+                    <label for="rtpass">Repeat Password:</label>
+                    <input type="password" id="rtpass" name="rtpass" required></br>
+                </div>
+                <div>
+                    <input type='radio' id="employee" name="signupcheck" value="employee" checked> Employee<br>
+                    <input type='radio' id="employer" name="signupcheck" value="employee"> Employer<br>
+                </div>
+                <div>
+                    <button type="submit">Signup</button></br>
+                </div>
+            </form>
+        </section>
+    </main>
+    <footer id="footer">
+    </footer>
+    </body>
+</html>
