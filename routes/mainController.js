@@ -180,9 +180,48 @@ router.get('/signup', function(req,res,next){
 
 router.get('/createnewuser', function(req,res,next){
     //create a new user
+
+    if(req.query.signupcheck == "employee"){
+        console.log('employee signup');
+        for(var i=0; i<employeeList.length; i++){
+            if(req.query.uname == employeeList[i].uname || req.query.email == employeeList[i].email){
+                console.log('already in use uname/email');
+                res.render('/signup', {data: 'a user with that username/email already exists, please enter a new username'});
+            }else{
+                console.log('new user confirmed');
+                var newUser = new EmployeeModel({name: req.query.name,
+                    id: i,
+                    email: req.query.email,
+                    uname: req.query.uname,
+                    pass: req.query.pass,
+                    groupIDs: [],
+                    monAvail: [],
+                    tueAvail: [],
+                    wedAvail: [],
+                    thAvail: [],
+                    friAvail: [],
+                    satAvail: [],
+                    sunAvail: []
+                });
+                theDB.addNewUser(newUser).then(function(){
+                    updateLocalDB();
+                    console.log('new user added');
+                    res.render('/');
+                });
+            }
+        }
+    }else{
+        for(var i=0; i<employeeList.length; i++){
+            if(req.query.uname == employeeList[i].uname || req.query.email == employeeList[i].email){
+                res.render('signup', {data: 'a user with that name/email already exists, please enter a new username'});
+            }else{
+
+            }
+    }
+}
     updateLocalDB();
     console.log('render something');
-    res.render('employer');
+    res.render('signup', {data: 'something went wrong'});
 });
 
 var updateLocalDB = function(){

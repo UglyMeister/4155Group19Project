@@ -15,6 +15,12 @@ var oneExists = function(uname){
     return false;
 };
 
+var addNewUser = async function(db){
+    let promise = await db.save();
+    return promise;
+}
+
 module.exports.getAll = getAll;
 module.exports.getOne = getOne;
 module.exports.oneExists = oneExists;
+module.exports.addNewUser = addNewUser;
