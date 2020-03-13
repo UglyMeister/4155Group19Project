@@ -190,7 +190,7 @@ router.get('/createnewuser', function(req,res,next){
             }else{
                 console.log('new user confirmed');
                 var newUser = new EmployeeModel({name: req.query.name,
-                    id: i,
+                    id: i+1,
                     email: req.query.email,
                     uname: req.query.uname,
                     pass: req.query.pass,
