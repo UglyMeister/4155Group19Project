@@ -218,8 +218,12 @@ router.get('/signup', function(req, res, next) {
 router.get('/createnewuser', function(req, res, next) {
     //create a new user
     var check = false;
+<<<<<<< HEAD
     updateLocalDB();
+    if(req.query.signupcheck == "employee"){
+=======
     if (req.query.signupcheck == 'employee') {
+>>>>>>> employer
         console.log('employee signup');
         for (var i = 0; i < employeeList.length; i++) {
             if (
@@ -227,33 +231,56 @@ router.get('/createnewuser', function(req, res, next) {
                 req.query.email == employeeList[i].email
             ) {
                 console.log('already in use uname/email');
-                res.render('signup', {
-                    data:
-                        'a user with that username/email already exists, please enter a new username'
-                });
+<<<<<<< HEAD
+                res.render('signup', {data: 'a user with that username/email already exists, please enter a new username'});
                 check = true;
             }
         }
-        if (!check) {
+        if(!check){
             console.log('new user confirmed');
-            var newUser = new EmployeeModel({
-                name: req.query.name,
-                id: i + 1,
-                email: req.query.email,
-                uname: req.query.uname,
-                pass: req.query.pass,
-                groupIDs: [],
-                monAvail: [],
-                tueAvail: [],
-                wedAvail: [],
-                thAvail: [],
-                friAvail: [],
-                satAvail: [],
-                sunAvail: []
-            });
-            theDB.addNewUser(newUser);
-            console.log('new user added');
-            res.redirect('/');
+                var newUser = new EmployeeModel({name: req.query.name,
+                    id: i+1,
+=======
+                res.render('/signup', {
+                    data:
+                        'a user with that username/email already exists, please enter a new username'
+                });
+            } else {
+                console.log('new user confirmed');
+                var newUser = new EmployeeModel({
+                    name: req.query.name,
+                    id: i + 1,
+>>>>>>> employer
+                    email: req.query.email,
+                    uname: req.query.uname,
+                    pass: req.query.pass,
+                    groupIDs: [],
+                    monAvail: [],
+                    tueAvail: [],
+                    wedAvail: [],
+                    thAvail: [],
+                    friAvail: [],
+                    satAvail: [],
+                    sunAvail: []
+                });
+<<<<<<< HEAD
+                theDB.addNewUser(newUser);
+                console.log('new user added');
+                res.redirect('/');
+        }
+    }else if(req.query.signupcheck == "employer"){
+        for(var i=0; i<employeeList.length; i++){
+            if(req.query.uname == employeeList[i].uname || req.query.email == employeeList[i].email){
+                res.render('signup', {data: 'a user with that name/email already exists, please enter a new username'});
+            }else{
+
+=======
+                theDB.addNewUser(newUser).then(function() {
+                    updateLocalDB();
+                    console.log('new user added');
+                    res.render('/');
+                });
+            }
         }
     } else if (req.query.signupcheck === 'employer') {
         console.log('employee signup');
@@ -265,6 +292,7 @@ router.get('/createnewuser', function(req, res, next) {
                         'a user with that username/email already exists, please enter a new username'
                 });
                 check = true;
+>>>>>>> employer
             }
         }
         if (!check) {
@@ -277,14 +305,23 @@ router.get('/createnewuser', function(req, res, next) {
                 pass: req.query.pass,
                 groupIDs: []
             });
-            theDB.addNewUser(newUser);
-            console.log('new user added');
-            res.render('/');
+            theDB.addNewUser(newUser).then(function() {
+                updateLocalDB();
+                console.log('new user added');
+                res.render('/');
+            });
         }
     }
-    /*updateLocalDB();*/
-    //console.log('render something');
-    /*res.render('signup', {data: 'something went wrong'});<]*/
+<<<<<<< HEAD
+}
+    /*updateLocalDB();
+    console.log('render something');
+    res.render('signup', {data: 'something went wrong'});*/
+=======
+    updateLocalDB();
+    console.log('render something');
+    res.render('signup', { data: 'something went wrong' });
+>>>>>>> employer
 });
 
 var updateLocalDB = function() {
