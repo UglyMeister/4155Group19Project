@@ -254,8 +254,7 @@ router.get('/createnewuser', function(req, res, next) {
                 });
             }
         }
-    }
-    if (req.query.signupcheck === 'employer') {
+    } else if (req.query.signupcheck === 'employer') {
         console.log('employee signup');
         for (const i in employerList) {
             if (req.query.uname == i.uname || req.query.email == i.email) {
@@ -305,4 +304,3 @@ var updateLocalDB = function() {
 };
 
 module.exports = router;
-
