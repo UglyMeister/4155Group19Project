@@ -180,15 +180,19 @@ router.get('/signup', function(req,res,next){
 
 router.get('/createnewuser', function(req,res,next){
     //create a new user
-
+    var check = false;
+    updateLocalDB();
     if(req.query.signupcheck == "employee"){
         console.log('employee signup');
         for(var i=0; i<employeeList.length; i++){
             if(req.query.uname == employeeList[i].uname || req.query.email == employeeList[i].email){
                 console.log('already in use uname/email');
-                res.render('/signup', {data: 'a user with that username/email already exists, please enter a new username'});
-            }else{
-                console.log('new user confirmed');
+                res.render('signup', {data: 'a user with that username/email already exists, please enter a new username'});
+                check = true;
+            }
+        }
+        if(!check){
+            console.log('new user confirmed');
                 var newUser = new EmployeeModel({name: req.query.name,
                     id: i+1,
                     email: req.query.email,
@@ -203,14 +207,11 @@ router.get('/createnewuser', function(req,res,next){
                     satAvail: [],
                     sunAvail: []
                 });
-                theDB.addNewUser(newUser).then(function(){
-                    updateLocalDB();
-                    console.log('new user added');
-                    res.render('/');
-                });
-            }
+                theDB.addNewUser(newUser);
+                console.log('new user added');
+                res.redirect('/');
         }
-    }else{
+    }else if(req.query.signupcheck == "employer"){
         for(var i=0; i<employeeList.length; i++){
             if(req.query.uname == employeeList[i].uname || req.query.email == employeeList[i].email){
                 res.render('signup', {data: 'a user with that name/email already exists, please enter a new username'});
@@ -219,9 +220,9 @@ router.get('/createnewuser', function(req,res,next){
             }
     }
 }
-    updateLocalDB();
+    /*updateLocalDB();
     console.log('render something');
-    res.render('signup', {data: 'something went wrong'});
+    res.render('signup', {data: 'something went wrong'});*/
 });
 
 var updateLocalDB = function(){

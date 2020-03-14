@@ -14,8 +14,8 @@ var oneExists = function(uname) {
 };
 
 var addNewUser = async function(db) {
-    let promise = await db.save();
-    return promise;
+    db.save();
+    return;
 };
 
 module.exports.getAll = getAll;
