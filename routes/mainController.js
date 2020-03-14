@@ -189,7 +189,7 @@ router.get('/employer', function(req, res, next) {
     console.log(`uname: ${uname}`);
     console.log(`pass: ${pass}`);
     if (uname != null && pass != null) {
-        for (i in employerList) {
+        for (const i in employerList) {
             if (i.uname === uname) {
                 console.log('found user in db');
                 if (i.pass === pass) {
@@ -217,7 +217,7 @@ router.get('/signup', function(req, res, next) {
 
 router.get('/createnewuser', function(req, res, next) {
     //create a new user
-
+    var check = false;
     if (req.query.signupcheck == 'employee') {
         console.log('employee signup');
         for (var i = 0; i < employeeList.length; i++) {
@@ -255,15 +255,19 @@ router.get('/createnewuser', function(req, res, next) {
             }
         }
     }
-    //if (req.query.signupcheck === 'employer') {
-    console.log('employee signup');
-    for (i in employerList) {
-        if (req.query.uname == i.uname || req.query.email == i.email) {
-            console.log('already in use uname/email');
-            res.render('/signup', {
-                data: 'a user with that username/email already exists, please enter a new username'
-            });
-        } else {
+    if (req.query.signupcheck === 'employer') {
+        console.log('employee signup');
+        for (const i in employerList) {
+            if (req.query.uname == i.uname || req.query.email == i.email) {
+                console.log('already in use uname/email');
+                res.render('/signup', {
+                    data:
+                        'a user with that username/email already exists, please enter a new username'
+                });
+                check = true;
+            }
+        }
+        if (!check) {
             console.log('new user confirmed');
             var newUser = new EmployeeModel({
                 name: req.query.name,
@@ -280,8 +284,6 @@ router.get('/createnewuser', function(req, res, next) {
             });
         }
     }
-
-    //}
     updateLocalDB();
     console.log('render something');
     res.render('signup', { data: 'something went wrong' });
