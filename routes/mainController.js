@@ -130,7 +130,7 @@ router.get('/about', function(req, res, next) {
     res.render('about');
 });
 
-router.get('/employee', function(req, res, next) {
+router.get('/login', function(req, res, next) {
     //render employee view
     updateLocalDB();
     var uname;
@@ -157,24 +157,37 @@ router.get('/employee', function(req, res, next) {
                   res.render('index');
             }
         });*/
-        for (var i = 0; i < employeeList.length; i++) {
-            if (employeeList[i].uname == uname) {
-                console.log('found user in db');
-                if (employeeList[i].pass == pass) {
-                    console.log('pass match, logging in');
-                    res.render('employee');
+        if(req.query.logincheck == "employee"){
+            for (var i = 0; i < employeeList.length; i++) {
+                if (employeeList[i].uname == uname) {
+                    console.log('found user in db');
+                    if (employeeList[i].pass == pass) {
+                        console.log('pass match, logging in');
+                        res.render('employee');
+                    } else {
+                        //alert('incorrect password');
+                        res.render('index', { data: 'incorrect password' });
+                    }
                 } else {
-                    //alert('incorrect password');
-                    res.render('index', { data: 'incorrect password' });
+                    //alert("user doesn't exist");
+                    res.render('index', { data: 'user doesnt exist' });
                 }
-            } else {
-                //alert("user doesn't exist");
-                res.render('index', { data: 'user doesnt exist' });
+            }
+        } else if(req.query.logincheck == "employer"){
+            for (var i = 0; i < employerList.length; i++){
+                if (employerList[i].uname == uname){
+                    console.log('found user in db');
+                    if(employerList[i].pass == pass){
+                        console.log('pass match, logging in');
+                        res.render('employer');
+                    } else {
+                        res.render('index', {data: 'incorrect password'});
+                    }
+                } else {
+                    res.render('index', {data: 'user doesnt exist'});
+                }
             }
         }
-    } else {
-        console.log('null uname or pass');
-        res.redirect('/');
     }
     /*
     console.log('render employee');
@@ -256,11 +269,11 @@ router.get('/createnewuser', function(req, res, next) {
             res.redirect('/');
         }
     } else if (req.query.signupcheck === 'employer') {
-        console.log('employee signup');
+        console.log('employer signup');
         for (const i in employerList) {
             if (req.query.uname == i.uname || req.query.email == i.email) {
                 console.log('already in use uname/email');
-                res.render('/signup', {
+                res.render('signup', {
                     data:
                         'a user with that username/email already exists, please enter a new username'
                 });
@@ -269,9 +282,9 @@ router.get('/createnewuser', function(req, res, next) {
         }
         if (!check) {
             console.log('new user confirmed');
-            var newUser = new EmployeeModel({
+            var newUser = new EmployerModel({
                 name: req.query.name,
-                id: i + 1,
+                id: 1,
                 email: req.query.email,
                 uname: req.query.uname,
                 pass: req.query.pass,
@@ -279,7 +292,7 @@ router.get('/createnewuser', function(req, res, next) {
             });
             theDB.addNewUser(newUser);
             console.log('new user added');
-            res.render('/');
+            res.render('index', {data: ''});
         }
     }
     /*updateLocalDB();*/
