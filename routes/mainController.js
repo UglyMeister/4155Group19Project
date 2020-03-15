@@ -157,7 +157,7 @@ router.get('/login', function(req, res, next) {
                   res.render('index');
             }
         });*/
-        if(req.query.logincheck == "employee"){
+        if (req.query.logincheck == 'employee') {
             for (var i = 0; i < employeeList.length; i++) {
                 if (employeeList[i].uname == uname) {
                     console.log('found user in db');
@@ -173,21 +173,72 @@ router.get('/login', function(req, res, next) {
                     res.render('index', { data: 'user doesnt exist' });
                 }
             }
-        } else if(req.query.logincheck == "employer"){
-            for (var i = 0; i < employerList.length; i++){
-                if (employerList[i].uname == uname){
+        } else if (req.query.logincheck == 'employer') {
+            for (var i = 0; i < employerList.length; i++) {
+                if (employerList[i].uname == uname) {
                     console.log('found user in db');
-                    if(employerList[i].pass == pass){
+                    if (employerList[i].pass == pass) {
                         console.log('pass match, logging in');
                         res.render('employer');
                     } else {
-                        res.render('index', {data: 'incorrect password'});
+                        res.render('index', { data: 'incorrect password' });
                     }
                 } else {
-                    res.render('index', {data: 'user doesnt exist'});
+                    res.render('index', { data: 'user doesnt exist' });
                 }
             }
         }
+    }
+    /*
+    console.log('render employee');
+    res.render('employee');*/
+});
+
+router.get('/employee', function(req, res, next) {
+    //render employee view
+    updateLocalDB();
+    var uname;
+    var pass;
+    console.log('uname');
+    console.log(req.query.uname);
+    console.log('pass');
+    console.log(req.query.pass);
+    if (req.query.uname != null && req.query.pass != null) {
+        console.log('not null uname or pass');
+        uname = req.query.uname;
+        pass = req.query.pass;
+        //no need to use this anymore
+        //by loading the db contents into a js variable we can access the data much faster and easier
+        //things will just be slighly different whenever we need to add users to the database
+        //will require a new addition to the database and for the local variable to be updated
+        /*theDB.getOne(EmployeeModel, uname).then(function(doc){
+            docPass = doc[0].pass;
+             if(docPass == pass){
+                   console.log('you are logged in');
+                  res.render('employee');
+             }else{
+                  console.log('doc null');
+                  res.render('index');
+            }
+        });*/
+        for (var i = 0; i < employeeList.length; i++) {
+            if (employeeList[i].uname == uname) {
+                console.log('found user in db');
+                if (employeeList[i].pass == pass) {
+                    console.log('pass match, logging in');
+                    res.render('employee');
+                } else {
+                    //alert('incorrect password');
+                    res.render('index', { data: 'incorrect password' });
+                }
+            } else {
+                //alert("user doesn't exist");
+                res.render('index', { data: 'user doesnt exist' });
+            }
+        }
+    } else {
+        console.log('null uname or pass');
+        res.redirect('/');
     }
     /*
     console.log('render employee');
@@ -292,7 +343,7 @@ router.get('/createnewuser', function(req, res, next) {
             });
             theDB.addNewUser(newUser);
             console.log('new user added');
-            res.render('index', {data: ''});
+            res.render('index', { data: '' });
         }
     }
     /*updateLocalDB();*/
