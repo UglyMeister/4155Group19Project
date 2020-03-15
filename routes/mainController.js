@@ -132,6 +132,7 @@ router.get('/about', function(req, res, next) {
 
 router.get('/login', function(req, res, next) {
     //render employee view
+    var check = false;
     updateLocalDB();
     var uname;
     var pass;
@@ -163,29 +164,37 @@ router.get('/login', function(req, res, next) {
                     console.log('found user in db');
                     if (employeeList[i].pass == pass) {
                         console.log('pass match, logging in');
+                        check = true;
                         res.render('employee');
                     } else {
                         //alert('incorrect password');
                         res.render('index', { data: 'incorrect password' });
                     }
-                } else {
+                }/* else {
                     //alert("user doesn't exist");
                     res.render('index', { data: 'user doesnt exist' });
-                }
+                }*/
+            }
+            if (!check){
+                res.render('index', {data: 'user doesnt exist'});
             }
         } else if (req.query.logincheck == 'employer') {
             for (var i = 0; i < employerList.length; i++) {
                 if (employerList[i].uname == uname) {
                     console.log('found user in db');
+                    check = true;
                     if (employerList[i].pass == pass) {
                         console.log('pass match, logging in');
                         res.render('employer');
                     } else {
                         res.render('index', { data: 'incorrect password' });
                     }
-                } else {
+                } /*else {
                     res.render('index', { data: 'user doesnt exist' });
-                }
+                }*/
+            }
+            if (!check){
+                res.render('index', {data: 'user doesnt exist'});
             }
         }
     }
