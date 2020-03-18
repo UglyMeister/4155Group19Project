@@ -1,7 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
+const EmployeeModel = require('../models/employee');
+const EmployerModel = require('../models/employer');
+const SkillsModel = require('../models/skill');
+const GroupsModel = require('../models/group');
+
 var theDB = require('../util/db');
+
 var employeeList;
 var employerList;
 var skillsList;
@@ -12,66 +18,6 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
     useNewUrlParser: true
 });
 var db = mongoose.connection;
-
-var employeeSchema = new mongoose.Schema(
-    {
-        name: String,
-        id: Number,
-        email: String,
-        uname: String,
-        pass: String,
-        groupIDs: [],
-        monAvail: [],
-        tueAvail: [],
-        wedAvail: [],
-        thAvail: [],
-        friAvail: [],
-        satAvail: [],
-        sunAvail: []
-    },
-    { collection: 'employee' }
-);
-
-var employerSchema = new mongoose.Schema(
-    {
-        name: String,
-        id: Number,
-        email: String,
-        uname: {
-            type: String,
-            unique: true
-        },
-        pass: String,
-        groupIDs: []
-    },
-    { collection: 'employer' }
-);
-
-var skillsSchema = new mongoose.Schema(
-    {
-        groupID: Number,
-        userID: Number,
-        skills: []
-    },
-    { collection: 'skills' }
-);
-
-var groupsSchema = new mongoose.Schema(
-    {
-        groupID: Number,
-        ownerID: Number,
-        memberIDs: [],
-        skills: []
-    },
-    { collection: 'groups' }
-);
-
-var EmployeeModel = db.model('Employee', employeeSchema);
-var EmployerModel = db.model('Employer', employerSchema);
-var SkillsModel = db.model('Skills', skillsSchema);
-var GroupsModel = db.model('Groups', groupsSchema);
-
-//var mysql = require('mysql');
 
 db.once('open', function() {
     console.log('Connected to database');
@@ -170,13 +116,13 @@ router.get('/login', function(req, res, next) {
                         //alert('incorrect password');
                         res.render('index', { data: 'incorrect password' });
                     }
-                }/* else {
+                } /* else {
                     //alert("user doesn't exist");
                     res.render('index', { data: 'user doesnt exist' });
                 }*/
             }
-            if (!check){
-                res.render('index', {data: 'user doesnt exist'});
+            if (!check) {
+                res.render('index', { data: 'user doesnt exist' });
             }
         } else if (req.query.logincheck == 'employer') {
             for (var i = 0; i < employerList.length; i++) {
@@ -193,8 +139,8 @@ router.get('/login', function(req, res, next) {
                     res.render('index', { data: 'user doesnt exist' });
                 }*/
             }
-            if (!check){
-                res.render('index', {data: 'user doesnt exist'});
+            if (!check) {
+                res.render('index', { data: 'user doesnt exist' });
             }
         }
     }
