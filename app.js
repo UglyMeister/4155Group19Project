@@ -7,7 +7,8 @@ var port = process.env.PORT || 8080;
 
 var path = require('path');
 //var cookieParser = require('cookie-parser'); ADD THIS LATER
-var mainController = require('./routes/mainController');
+var employerRouter = require('./routes/employerRouter');
+var homeRouter = require('./routes/homeRouter');
 
 var app = express();
 
@@ -24,7 +25,7 @@ app.use('/resources', express.static('resources'));
 
 //post handling
 var bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({extended: false});
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //session handling
@@ -32,19 +33,20 @@ var session = require('express-session');
 //var cookieParser = require('cookie-parser');
 
 //app.use(cookieParser());
-app.use(session({secret: "the secret"}));
+app.use(session({ secret: 'the secret' }));
 
 //routes
 //define teh routes and add the controllers
-app.use('/', mainController);
+app.use('/', homeRouter);
+app.use('/employer', employerRouter);
 
 //catch 404 and forward to error handler
-app.use(function(req, res, next){
+app.use(function(req, res, next) {
     next(createError(404));
 });
 
 //error handler
-app.use(function(err, req, res, next){
+app.use(function(err, req, res, next) {
     //set locals, only providing error in dev
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -53,6 +55,7 @@ app.use(function(err, req, res, next){
     res.status(err.status || 500);
     res.render('error');
 });
-app.listen(port, function(){
+app.listen(port, function() {
     console.log('listening live');
 });
+

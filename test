@@ -1,0 +1,16 @@
+routes
+
+    /
+        login
+        home
+        about
+        create
+    /employee/id
+                /
+                editskills
+                editTime
+
+    /employer/id
+                /
+                /editSkills
+                /editAssociates
