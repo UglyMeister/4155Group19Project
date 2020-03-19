@@ -18,27 +18,31 @@ exports.createUser = async (req, res, next) => {
 };
 
 exports.userLogin = async (req, res, next) => {
-    const username = req.body.uname;
-    const password = req.body.pass;
-    if (req.body.logincheck == 'employee') {
-        const employee = await employeeModel.findOne({
-            uname: new RegExp('^' + username + '$', 'i')
-        });
-        console.log(employee);
-        if (employee.pass == password) {
-            console.log('test');
-            res.render('employee');
+    try {
+        const username = req.body.uname;
+        const password = req.body.pass;
+        if (req.body.logincheck == 'employee') {
+            const employee = await employeeModel.findOne({
+                uname: new RegExp('^' + username + '$', 'i')
+            });
+            console.log(employee);
+            if (employee.pass == password) {
+                console.log('test');
+                res.render('employee');
+            } else {
+                res.render('index', { data: 'incorrect username or password' });
+            }
         } else {
-            res.render('index', { data: 'incorrect username or password' });
+            const employer = await employerModel.findOne({
+                uname: new RegExp('^' + username + '$', 'i')
+            });
+            if (employer.pass == password) {
+                res.render('employer');
+            } else {
+                res.render('index', { data: 'incorrect username or password' });
+            }
         }
-    } else {
-        const employer = await employerModel.findOne({
-            uname: new RegExp('^' + username + '$', 'i')
-        });
-        if (employer.pass == password) {
-            res.render('employer');
-        } else {
-            res.render('index', { data: 'incorrect username or password' });
-        }
+    } catch (e) {
+        console.log(e);
     }
 };
