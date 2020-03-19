@@ -18,8 +18,8 @@ var employeeSchema = new mongoose.Schema(
         friAvail: [],
         satAvail: [],
         sunAvail: []
-    }
-    //{ collection: 'employee' }
+    },
+    { collection: 'employee' }
 );
 
 const Employee = mongoose.model('Employee', employeeSchema);
