@@ -25,10 +25,18 @@ exports.userLogin = async (req, res, next) => {
             const employee = await employeeModel.findOne({
                 uname: new RegExp('^' + username + '$', 'i')
             });
-            console.log(employee);
-            if (employee.pass == password) {
-                console.log('test');
-                res.render('employee');
+            //console.log(employee);
+            if (employee != null && employee.pass == password) {
+                //session stuff added here
+                req.session.profile = employee;
+                req.session.type = 'employee';
+                console.log(req.session.profile);
+                req.session.save();
+                //session stuff above
+                //console.log('test');
+                //WANT TO CHANGE THIS TO A REDIRECT TO /PROFILE, SHOULD ALSO BE THE SAME FOR THE EMPLOYER VIEW
+                //res.render('employee');
+                res.redirect('/profile');
             } else {
                 res.render('index', { data: 'incorrect username or password' });
             }
@@ -36,8 +44,14 @@ exports.userLogin = async (req, res, next) => {
             const employer = await employerModel.findOne({
                 uname: new RegExp('^' + username + '$', 'i')
             });
-            if (employer.pass == password) {
-                res.render('employer');
+            //console.log(employer);
+            if (employer != null && employer.pass == password) {
+                req.session.profile = employer;
+                req.session.type = 'employer';
+                console.log(req.session.profile);
+                req.session.save();
+                res.redirect('/profile');
+                //res.render('employer');
             } else {
                 res.render('index', { data: 'incorrect username or password' });
             }

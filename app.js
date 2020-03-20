@@ -33,7 +33,10 @@ var session = require('express-session');
 //var cookieParser = require('cookie-parser');
 
 //app.use(cookieParser());
-app.use(session({ secret: 'the secret' }));
+//THIS SESSION IS FOR TESTING ONLY
+app.use(session({ secret: 'the secret', saveUninitialized: false }));
+//ENABLE THIS SESSION WHEN WE GO INTO PRODUCTION BC SECURE COOKIE
+//app.use(session({ secret: 'the secret',cookie: {secure: true}, saveUninitialized: false }));
 
 //routes
 //define teh routes and add the controllers
