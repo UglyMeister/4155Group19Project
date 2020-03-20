@@ -6,11 +6,24 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
 var employeeSchema = new mongoose.Schema(
     {
         name: String,
-        id: Number,
-        email: String,
-        uname: String,
+        id: {
+            type: Number,
+            unique: true,
+            required: true
+        },
+        email: {
+            type: String,
+            unique: true,
+            required: true
+        },
+        uname: {
+            type: String,
+            unique: true,
+            required: true
+        },
         pass: String,
         groupIDs: [],
+        skillIDs: [],
         monAvail: [],
         tueAvail: [],
         wedAvail: [],

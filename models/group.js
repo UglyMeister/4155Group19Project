@@ -4,12 +4,12 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
 });
 //var db = mongoose.connection;
 
-var groupsSchema = new mongoose.Schema(
+var groupsschema = new mongoose.schema(
     {
-        groupID: Number,
-        ownerID: Number,
-        memberIDs: [],
-        skills: []
+        groupid: number,
+        ownerid: number,
+        memberIds: [],
+        skillIds: []
     },
     { collection: 'groups' }
 );
