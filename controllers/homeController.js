@@ -26,7 +26,7 @@ exports.userLogin = async (req, res, next) => {
                 uname: new RegExp('^' + username + '$', 'i')
             });
             console.log(employee);
-            if (employee.pass == password && employee.pass != null) {
+            if (employee != null && employee.pass == password) {
                 //session stuff added here
                 req.session.profile = employee;
                 req.session.type = 'employee';
@@ -42,7 +42,7 @@ exports.userLogin = async (req, res, next) => {
             const employer = await employerModel.findOne({
                 uname: new RegExp('^' + username + '$', 'i')
             });
-            if (employer.pass == password) {
+            if (employer != null && employer.pass == password) {
                 res.render('employer');
             } else {
                 res.render('index', { data: 'incorrect username or password' });
