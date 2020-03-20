@@ -26,8 +26,14 @@ exports.userLogin = async (req, res, next) => {
                 uname: new RegExp('^' + username + '$', 'i')
             });
             console.log(employee);
-            if (employee.pass == password) {
-                console.log('test');
+            if (employee.pass == password && employee.pass != null) {
+                //session stuff added here
+                req.session.profile = employee;
+                req.session.type = 'employee';
+                console.log(req.session.profile);
+                //session stuff above
+                //console.log('test');
+                //WANT TO CHANGE THIS TO A REDIRECT TO /PROFILE, SHOULD ALSO BE THE SAME FOR THE EMPLOYER VIEW
                 res.render('employee');
             } else {
                 res.render('index', { data: 'incorrect username or password' });

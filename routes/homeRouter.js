@@ -30,5 +30,15 @@ router.get('/signup', function(req, res, next) {
     res.render('signup', { data: '' });
 });
 
+router.get('/profile', function(req,res,next) {
+    //render the profile view for a user
+    if(req.session.profile != null){
+        console.log('render profile');
+        res.render('employee');//this is temporary, will change later
+    } else {
+        res.render('index', {data: 'error, not logged in, please log in'});
+    }
+});
+
 router.route('/createnewuser').post(homeController.createUser);
 module.exports = router;
