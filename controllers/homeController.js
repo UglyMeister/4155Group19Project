@@ -32,7 +32,6 @@ exports.userLogin = async (req, res, next) => {
                 req.session.type = 'employee';
                 console.log(req.session.profile);
                 req.session.save();
-                let session = req.session;
                 //session stuff above
                 //console.log('test');
                 //WANT TO CHANGE THIS TO A REDIRECT TO /PROFILE, SHOULD ALSO BE THE SAME FOR THE EMPLOYER VIEW
