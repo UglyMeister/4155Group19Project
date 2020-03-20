@@ -32,9 +32,10 @@ router.get('/signup', function(req, res, next) {
 
 router.get('/profile', function(req,res,next) {
     //render the profile view for a user
-    if(req.session.profile != null){
+    console.log(req.session.profile);
+    if(req.session.profile){
         console.log('render profile');
-        res.render('employee');//this is temporary, will change later
+        res.render('profile', {data: req.session.profile.name});//this is temporary, will change later
     } else {
         res.render('index', {data: 'error, not logged in, please log in'});
     }
