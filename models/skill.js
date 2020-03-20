@@ -10,7 +10,10 @@ var skillsSchema = new mongoose.Schema(
         userIDs: [],
         shiftsNeeded: [],
         shiftCount: [],
-        description: String
+        description: {
+            type: String,
+            required: true
+        }
     },
     { collection: 'skills' }
 );
