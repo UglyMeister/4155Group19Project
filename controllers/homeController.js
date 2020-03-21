@@ -3,6 +3,7 @@ const employerModel = require('./../models/employer');
 
 exports.createUser = async (req, res, next) => {
     try {
+        console.log(req.body.signupcheck);
         if (req.body.signupcheck == 'employee') {
             const newEmployee = await employeeModel.create(req.body);
         } else {

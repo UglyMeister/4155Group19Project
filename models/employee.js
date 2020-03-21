@@ -8,8 +8,7 @@ var employeeSchema = new mongoose.Schema(
         name: String,
         id: {
             type: Number,
-            unique: true,
-            required: true
+            unique: true
         },
         email: {
             type: String,
