@@ -1,10 +1,10 @@
 const express = require('express');
 
-const employeeController = require('./../controllers/employeeController');
+const userController = require('./../controllers/userController');
 
 const router = express.Router();
 
-router.get(employeeController.getEmployee);
+router.route('/profile').get(userController.getProfile);
 
 router.route('/employee/:id/editSkills');
 

@@ -7,6 +7,7 @@ var port = process.env.PORT || 8080;
 
 var path = require('path');
 //var cookieParser = require('cookie-parser'); ADD THIS LATER
+const employeeRouter = require('./routes/employeeRouter');
 var employerRouter = require('./routes/employerRouter');
 var homeRouter = require('./routes/homeRouter');
 
@@ -41,6 +42,7 @@ app.use(session({ secret: 'the secret', saveUninitialized: false }));
 //routes
 //define teh routes and add the controllers
 app.use('/', homeRouter);
+app.use('/employee', employeeRouter);
 app.use('/employer', employerRouter);
 
 //catch 404 and forward to error handler
@@ -61,4 +63,3 @@ app.use(function(err, req, res, next) {
 app.listen(port, function() {
     console.log('listening live');
 });
-

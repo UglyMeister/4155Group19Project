@@ -12,30 +12,11 @@
     <%- include('includes/nav.ejs') %>    
 
     <main>
-        <section id="login">
-            <h1>Login</h1>
-            <h4><%= data %></h4>
-            <form action='/login' method='post'>
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="uname" name="uname" required></br>
-            </div>
-            <div>
-                <label for="pass">Password:</label>
-                <input type="password" id="pass" name="pass"></br>
-            </div>
-            <div>
-                <input type='radio' id="employee" name="logincheck" value="employee" checked> Employee<br>
-                <input type='radio' id="employer" name="logincheck" value="employer"> Employer<br>
-            </div>
-            <div>
-                <button type="submit">Login</button></br>
-            </div>
-            </form>
-            <div>
-                <a href='/signup'>New? Sign up here</a>
-            </div>
-        </section>
+        <h1>Smart Boss</h1>
+        <h2><%= data %></h2>
+        <h3>Jobs</h3>
+        <h3>Add A Job</h3>
+      </form>
     </main>
     <footer id="footer">
     </footer>

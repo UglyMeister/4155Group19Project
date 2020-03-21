@@ -1,10 +1,10 @@
 const express = require('express');
 
-const employerController = require('./../controllers/employerController');
+const userController = require('./../controllers/userController');
 
 const router = express.Router();
 
-router.get(employerController.getEmployer);
+router.route('/profile').get(userController.getProfile);
 
 router.route('/employer/:id/editSkills');
 

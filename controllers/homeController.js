@@ -37,7 +37,7 @@ exports.userLogin = async (req, res, next) => {
                 //console.log('test');
                 //WANT TO CHANGE THIS TO A REDIRECT TO /PROFILE, SHOULD ALSO BE THE SAME FOR THE EMPLOYER VIEW
                 //res.render('employee');
-                res.redirect('/profile');
+                res.redirect('/employee/profile');
             } else {
                 res.render('index', { data: 'incorrect username or password' });
             }
@@ -51,7 +51,7 @@ exports.userLogin = async (req, res, next) => {
                 req.session.type = 'employer';
                 console.log(req.session.profile);
                 req.session.save();
-                res.redirect('/profile');
+                res.redirect('/employer/profile');
                 //res.render('employer');
             } else {
                 res.render('index', { data: 'incorrect username or password' });
