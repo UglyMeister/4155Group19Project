@@ -1,24 +1,42 @@
 <html>
-<!--/Product Details page-->  
-<head>
-    <title>Smart Boss</title> 
-    <%- include('includes/head.ejs') %>
-       
+    <!--/Product Details page-->
+    <head>
+        <title>Smart Boss</title>
+        <%- include('includes/head.ejs') %>
+    </head>
+    <!--/body-->
+    <body>
+        <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
+        <%- include('includes/nav.ejs') %>
 
-</head>
-<!--/body-->    
-<body>
-<!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->   
-    <%- include('includes/nav.ejs') %>    
-
-    <main>
-        <h1>Smart Boss</h1>
-        <h2><%= data %></h2>
-        <h3>Jobs</h3>
-        <h3>Add A Job</h3>
-      </form>
-    </main>
-    <footer id="footer">
-    </footer>
+        <main>
+            <h1>Smart Boss</h1>
+            <h3>Jobs</h3>
+            <% if(numberOfGroups > 0) { %> 
+                <% groups.forEach(function(group) { %>
+                <a href="/job.ejs"><%= group %></a>
+            <% }); %> <% } else { %>
+                <span>No Jobs currently please create or add a job</span>
+            <% } %>
+            <h3>Add A Job</h3>
+            <% if(type == 'employee') { %>
+                <form action="/employee/addJob">
+                    <label for="AddGroup">
+                        <span>Job Code:</span>
+                        <input type="text" />
+                        <button>Add Job</button>
+                    </label>
+                </form>
+            <% } else { %>
+                <form action='/employer/createJob'>
+                    <label for="createGroup">
+                        <span>Job Name:</span>
+                        <input type="text" />
+                        <button>Create Job</button>
+                    </label>
+                </form>
+            <% } %>
+        </main>
+        <footer id="footer"></footer>
     </body>
 </html>
