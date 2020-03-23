@@ -12,6 +12,7 @@
         <main>
             <h1>Smart Boss</h1>
             <h2>Welcome <%- name %></h2>
+            <br>
             <h3>Jobs</h3>
             <% if(numberOfGroups > 0) { %> 
                 <% groups.forEach(function(group) { %>
@@ -35,6 +36,17 @@
                         <input type="text" />
                         <button>Create Job</button>
                     </label>
+                </form>
+            <% } %>
+            <% if(type == 'employee') { %>
+                <form class='dropdown' action='/employee/schedule'>
+                    <label for='mon'>Monday:</label>
+                    <select id='mon'>
+                        <option value=0000>12:00 am</option>
+                        <option value=0030>12:30 am</option>
+                        <option value=0100>1:00 am</option>
+                    </select>
+                    <button type='submit'>Submit Changes</button>
                 </form>
             <% } %>
         </main>
