@@ -6,8 +6,10 @@ const router = express.Router();
 
 router.route('/profile').get(userController.getProfile);
 
-router.route('/employer/:id/editSkills');
+router.route('/:groupName');
 
-router.route('/employer/:id/editAssociates');
+router.route('/:groupName/skills');
+
+router.route('/:groupName/:employee');
 
 module.exports = router;
