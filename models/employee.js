@@ -3,6 +3,8 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
     useNewUrlParser: true
 });
 
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 var employeeSchema = new mongoose.Schema(
     {
         name: String,
@@ -21,8 +23,18 @@ var employeeSchema = new mongoose.Schema(
             required: true
         },
         pass: String,
-        groupIDs: [Schema.Types.ObjectId],
-        skillIDs: [Schema.Types.ObjectId],
+        groupIDs: [
+            {
+                type: ObjectId,
+                ref: 'group'
+            }
+        ],
+        skillIDs: [
+            {
+                type: ObjectId,
+                ref: 'skill'
+            }
+        ],
         monAvail: [],
         tueAvail: [],
         wedAvail: [],

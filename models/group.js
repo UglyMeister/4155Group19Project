@@ -3,13 +3,29 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
     useNewUrlParser: true
 });
 //var db = mongoose.connection;
-
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 var groupsschema = new mongoose.schema(
     {
         name: String,
-        ownerid: Schema.Types.ObjectId,
-        memberIds: [Schema.Types.ObjectId],
-        skillIds: [Schema.Types.ObjectId]
+        ownerid: [
+            {
+                type: ObjectId,
+                ref: 'employer'
+            }
+        ],
+        memberIds: [
+            {
+                type: ObjectId,
+                ref: 'employee'
+            }
+        ],
+        skillIds: [
+            {
+                type: ObjectId,
+                ref: 'skill'
+            }
+        ]
     },
     { collection: 'groups' }
 );
