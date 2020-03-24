@@ -30,10 +30,10 @@
                     </label>
                 </form>
             <% } else { %>
-                <form action='/employer/createJob'>
+                <form action='/employer/createJob' method='post'>
                     <label for="createGroup">
                         <span>Job Name:</span>
-                        <input type="text" />
+                        <input type="text" id='groupName' name='groupName'/>
                         <button>Create Job</button>
                     </label>
                 </form>

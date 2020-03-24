@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.route('/profile').get(userController.getProfile);
 
+router.route('/createJob').post(userController.createJob);
+
 router.route('/:groupName');
 
 router.route('/:groupName/skills');
