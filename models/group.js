@@ -6,10 +6,10 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
 
 var groupsschema = new mongoose.schema(
     {
-        groupid: number,
-        ownerid: number,
-        memberIds: [],
-        skillIds: []
+        name: String,
+        ownerid: Schema.Types.ObjectId,
+        memberIds: [Schema.Types.ObjectId],
+        skillIds: [Schema.Types.ObjectId]
     },
     { collection: 'groups' }
 );

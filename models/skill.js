@@ -6,8 +6,7 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
 
 var skillsSchema = new mongoose.Schema(
     {
-        groupID: Number,
-        userIDs: [],
+        userIDs: [Schema.Types.ObjectId],
         shiftsNeeded: [],
         shiftCount: [],
         description: {

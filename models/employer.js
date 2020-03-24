@@ -22,7 +22,7 @@ var employerSchema = new mongoose.Schema(
             required: true
         },
         pass: String,
-        groupIDs: []
+        groupIDs: [Schema.Types.ObjectId]
     },
     { collection: 'employer' }
 );

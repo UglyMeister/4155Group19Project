@@ -21,8 +21,8 @@ var employeeSchema = new mongoose.Schema(
             required: true
         },
         pass: String,
-        groupIDs: [],
-        skillIDs: [],
+        groupIDs: [Schema.Types.ObjectId],
+        skillIDs: [Schema.Types.ObjectId],
         monAvail: [],
         tueAvail: [],
         wedAvail: [],
