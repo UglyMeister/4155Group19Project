@@ -37,6 +37,14 @@ exports.createJob = async (req, res, next) => {
     }
 };
 
+exports.addJob = async (req, res, next) => {
+    const employee = req.session.profile;
+    const joinGroup = await groupModel.findById(req.body.groupId);
+    await EmployeeModel.findByIdAndUpdate(employee._id, { $push: { groupIDs: joinGroup._id } });
+    await groupModel.findByIdAndUpdate(joinGroup._id, { $push: { memberIds: employee._id } });
+    res.redirect('/employee/profile');
+};
+
 exports.getGroups = async (req, res, next) => {
     const employer = req.session.profile;
 };

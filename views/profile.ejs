@@ -22,10 +22,10 @@
             <% } %>
             <h3>Add A Job</h3>
             <% if(type == 'employee') { %>
-                <form action="/employee/addJob">
+                <form action="/employee/addJob" method='post'>
                     <label for="AddGroup">
                         <span>Job Code:</span>
-                        <input type="text" />
+                        <input type="text" id='groupId' name='groupId'/>
                         <button>Add Job</button>
                     </label>
                 </form>
