@@ -16,7 +16,7 @@
             <h3>Jobs</h3>
             <% if(numberOfGroups > 0) { %> 
                 <% groups.forEach(function(group) { %>
-                <a href="/job.ejs"><%= group %></a>
+                <a href="/<%= type %>/profile/<%= group.groupName %>"><%= group.groupName %></a>
             <% }); %> <% } else { %>
                 <span>No Jobs currently please create or add a job</span>
             <% } %>
