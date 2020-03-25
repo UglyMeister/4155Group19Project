@@ -8,7 +8,7 @@ router.route('/profile').get(userController.getProfile);
 
 router.route('/createJob').post(userController.createJob);
 
-router.route('/profile/group').get(userController.jobPage);
+router.route('/profile/group').post(userController.jobPage);
 
 router.route('/profile/:groupName/skill');
 

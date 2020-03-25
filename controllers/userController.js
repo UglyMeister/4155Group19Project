@@ -1,6 +1,7 @@
 const EmployeeModel = require('./../models/employee');
 const EmployerModel = require('./../models/employer');
 const groupModel = require('./../models/group');
+const SkillModel = require('./../models/skill');
 
 exports.getProfile = async (req, res, next) => {
     try {
@@ -45,10 +46,27 @@ exports.addJob = async (req, res, next) => {
     res.redirect('/employee/profile');
 };
 
-exports.getGroups = async (req, res, next) => {
-    const employer = req.session.profile;
-};
-
 exports.jobPage = async (req, res, next) => {
-    res.render('groupPage');
+    try {
+        if (req.session.profile) {
+            const group = await groupModel.findById(req.body.groupId);
+            const skillNames = await SkillModel.find({ _id: { $in: group.skillIds } }, { name: 1 });
+            const employeeNames = await EmployeeModel.find(
+                { _id: { $in: group.memberIds } },
+                { name: 1 }
+            );
+
+            res.render('groupPage', {
+                jobCode: req.body.groupId,
+                type: req.session.type,
+                skills: skillNames,
+                employees: employeeNames,
+                name: group.groupName
+            });
+        } else {
+            res.render('index', { data: 'error, not logged in, please log in' });
+        }
+    } catch (e) {
+        console.log(e);
+    }
 };
