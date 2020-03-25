@@ -9,6 +9,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 var skillsSchema = new mongoose.Schema(
     {
+        name: String,
         userIDs: [
             {
                 type: ObjectId,

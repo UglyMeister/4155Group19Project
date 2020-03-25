@@ -1,0 +1,31 @@
+<html>
+    <!--/Product Details page-->
+    <head>
+        <title>Smart Boss</title>
+        <%- include('includes/head.ejs') %>
+    </head>
+    <!--/body-->
+    <body>
+        <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
+        <%- include('includes/nav.ejs') %>
+        <main>
+            <h3>Skills</h3>
+            <% if(skills.length < 1) { %>
+            <span>No skills created please create some</span>
+            <% } else { %> <% skills.forEach(function(skill) {%>
+            <a href="<%= employer/profile/groupName/skill %>"><%= skill.name %></a>
+            <a href="some remove">Remove</a>
+            <a href="some update">Update</a>
+            <% }); %> <% } %>
+            <h3>Create A skill</h3>
+            <form action="/employer/createJob" method="post">
+                <label for="createSkill">
+                    <span>Skill Name:</span>
+                    <input type="text" id="skillName" name="skillName" />
+                    <button>Create Skill</button>
+                </label>
+            </form>
+        </main>
+        <footer id="footer"></footer>
+    </body>
+</html>
