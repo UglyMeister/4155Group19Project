@@ -6,16 +6,14 @@ const SkillModel = require('./../models/skill');
 exports.getProfile = async (req, res, next) => {
     try {
         if (req.session.profile) {
-            const groupNames = await groupModel.find(
+            req.session.groupNames = await groupModel.find(
                 { _id: { $in: req.session.profile.groupIDs } },
                 { groupName: 1 }
             );
-            const numberOfGroups = groupNames.length;
-
             res.render('profile', {
                 type: req.session.type,
-                groups: groupNames,
-                numberOfGroups: numberOfGroups,
+                groups: req.session.groupNames,
+                numberOfGroups: req.session.groupNames.length,
                 name: req.session.profile.name
             }); //this is temporary, will change later
         } else {
@@ -31,8 +29,14 @@ exports.createJob = async (req, res, next) => {
         const employer = req.session.profile;
         req.body.ownerId = employer._id;
         const newGroup = await groupModel.create(req.body);
+        req.session.groupNames.push(newGroup);
         await EmployerModel.findByIdAndUpdate(employer._id, { $push: { groupIDs: newGroup._id } });
-        res.redirect('/employer/profile');
+        res.render('profile', {
+                type: req.session.type,
+                groups: req.session.groupNames,
+                numberOfGroups: req.session.groupNames.length,
+                name: req.session.profile.name
+            });
     } catch (e) {
         console.log(e);
     }
@@ -49,18 +53,19 @@ exports.addJob = async (req, res, next) => {
 exports.jobPage = async (req, res, next) => {
     try {
         if (req.session.profile) {
-            const group = await groupModel.findById(req.body.groupId);
-            const skillNames = await SkillModel.find({ _id: { $in: group.skillIds } }, { name: 1 });
-            const employeeNames = await EmployeeModel.find(
+            req.session.currentGroupId = req.query.groupId;
+            const group = await groupModel.findById(req.query.groupId);
+            req.session.groupSkillNames = await SkillModel.find({ _id: { $in: group.skillIds } }, { name: 1 });
+            req.session.groupEmployeeNames = await EmployeeModel.find(
                 { _id: { $in: group.memberIds } },
                 { name: 1 }
             );
 
             res.render('groupPage', {
-                jobCode: req.body.groupId,
+                jobCode: req.session.currentGroupId,
                 type: req.session.type,
-                skills: skillNames,
-                employees: employeeNames,
+                skills: req.session.groupSkillNames,
+                employees: req.session.groupEmployeeNames,
                 name: group.groupName
             });
         } else {

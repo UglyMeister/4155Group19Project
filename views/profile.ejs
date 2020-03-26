@@ -15,7 +15,7 @@
             <br />
             <h3>Jobs</h3>
             <% if(numberOfGroups > 0) { %>
-            <form action="/<%= type %>/profile/group" method='post'>
+            <form action="/<%= type %>/group" method='get'>
                 <% groups.forEach(function(group) { %>
                     <button value="<%= group._id%>" id='groupId' name='groupId'><%= group.groupName %></button>
                 <% }); %>
@@ -25,7 +25,7 @@
             <% } %>
             <h3>Add A Job</h3>
             <% if(type == 'employee') { %>
-            <form action="/employee/addJob" method="post">
+            <form action="/employee/" method="post">
                 <label for="AddGroup">
                     <span>Job Code:</span>
                     <input type="text" id="groupId" name="groupId" />
@@ -33,7 +33,7 @@
                 </label>
             </form>
             <% } else { %>
-            <form action="/employer/createJob" method="post">
+            <form action="/employer/" method="post">
                 <label for="createGroup">
                     <span>Job Name:</span>
                     <input type="text" id="groupName" name="groupName" />

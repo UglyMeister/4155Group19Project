@@ -4,9 +4,7 @@ const userController = require('./../controllers/userController');
 
 const router = express.Router();
 
-router.route('/profile').get(userController.getProfile);
-
-router.route('/addJob').post(userController.addJob);
+router.route('/').get(userController.getProfile).post(userController.addJob);
 
 router.route('/:groupName');
 
