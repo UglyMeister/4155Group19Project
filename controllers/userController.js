@@ -32,11 +32,11 @@ exports.createJob = async (req, res, next) => {
         req.session.groupNames.push(newGroup);
         await EmployerModel.findByIdAndUpdate(employer._id, { $push: { groupIDs: newGroup._id } });
         res.render('profile', {
-                type: req.session.type,
-                groups: req.session.groupNames,
-                numberOfGroups: req.session.groupNames.length,
-                name: req.session.profile.name
-            });
+            type: req.session.type,
+            groups: req.session.groupNames,
+            numberOfGroups: req.session.groupNames.length,
+            name: req.session.profile.name
+        });
     } catch (e) {
         console.log(e);
     }
@@ -47,7 +47,13 @@ exports.addJob = async (req, res, next) => {
     const joinGroup = await groupModel.findById(req.body.groupId);
     await EmployeeModel.findByIdAndUpdate(employee._id, { $push: { groupIDs: joinGroup._id } });
     await groupModel.findByIdAndUpdate(joinGroup._id, { $push: { memberIds: employee._id } });
-    res.redirect('/employee/profile');
+    req.session.groupNames.push(joinGroup);
+    res.render('profile', {
+        type: req.session.type,
+        groups: req.session.groupNames,
+        numberOfGroups: req.session.groupNames.length,
+        name: req.session.profile.name
+    });
 };
 
 exports.jobPage = async (req, res, next) => {
@@ -55,7 +61,10 @@ exports.jobPage = async (req, res, next) => {
         if (req.session.profile) {
             req.session.currentGroupId = req.query.groupId;
             const group = await groupModel.findById(req.query.groupId);
-            req.session.groupSkillNames = await SkillModel.find({ _id: { $in: group.skillIds } }, { name: 1 });
+            req.session.groupSkillNames = await SkillModel.find(
+                { _id: { $in: group.skillIds } },
+                { name: 1 }
+            );
             req.session.groupEmployeeNames = await EmployeeModel.find(
                 { _id: { $in: group.memberIds } },
                 { name: 1 }
