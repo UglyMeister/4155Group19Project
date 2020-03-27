@@ -59,6 +59,7 @@ exports.addJob = async (req, res, next) => {
 
 exports.employeeJobPage = async (req, res, next) => {
     try {
+        console.log('test');
         if (req.session.profile) {
             req.session.currentGroup = await GroupModel.findById(req.query.groupID);
             req.session.groupSkillNames = await SkillModel.find(
@@ -126,4 +127,26 @@ exports.createSkill = async (req, res, next) => {
     } catch (e) {
         console.log(e);
     }
+};
+
+exports.employeeUpdateSkill = async (req, res, next) => {
+    if (req.query.skillUpdate == 'add') {
+        await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
+            $push: { skillIDs: req.query.skillID }
+        });
+    } else {
+        await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
+            $pull: { skillIDs: req.query.skillID }
+        });
+    }
+
+    req.session.profile = await EmployeeModel.findById(req.session.profile._id);
+
+    res.render('groupPage', {
+        jobCode: req.session.currentGroup._id,
+        type: req.session.type,
+        employee: req.session.profile,
+        skills: req.session.groupSkillNames,
+        name: req.session.currentGroup.name
+    });
 };

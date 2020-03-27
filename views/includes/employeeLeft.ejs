@@ -11,11 +11,19 @@
             <h3>Skills</h3>
             <% if(skills.length < 1) { %>
             <span>No skills created talk to manager to add skills</span>
-            <% } else { %> <% skills.forEach(function(skill) {%>
-            <a href="employee/group"><%= skill.name %></a>
-            <a href="some update">Add</a>
-            <a href="some remove">Remove</a>
-            <% }); %> <% } %>
+            <% } else { %> 
+            <form action='/employee/group/skills' method='get'>
+            <% skills.forEach(function(skill) {%>
+            <span><%= skill.name %></span>
+            <input type="hidden" id="skillID" name ="skillID" value='<%= skill._id %>'/>
+            <% if(employee.skillIDs.includes(skill._id)) { %>
+            <button value='remove' id='skillUpdate' name='skillUpdate'>remove</button>
+            <% } else { %>
+            <button value='add' id='skillUpdate' name='skillUpdate'>Add skill</button>
+            <% } %>
+            <% }); %> 
+            </form>
+            <% } %>
         </main>
         <footer id="footer"></footer>
     </body>
