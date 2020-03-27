@@ -9,10 +9,6 @@ const ObjectId = Schema.Types.ObjectId;
 var employeeSchema = new mongoose.Schema(
     {
         name: String,
-        id: {
-            type: Number,
-            unique: true
-        },
         email: {
             type: String,
             unique: true,
@@ -47,6 +43,6 @@ var employeeSchema = new mongoose.Schema(
     { collection: 'employee' }
 );
 
-const Employee = mongoose.model('Employee', employeeSchema);
+const EmployeeModel = mongoose.model('Employee', employeeSchema);
 
-module.exports = Employee;
+module.exports = EmployeeModel;

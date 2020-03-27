@@ -10,18 +10,18 @@
         <main>
             <h3>Skills</h3>
             <% if(skills.length < 1) { %>
-            <span>No skills created please create some</span>
+            <span>No skills added pleae add some</span>
             <% } else { %> <% skills.forEach(function(skill) {%>
-            <a href="/employer/profile/groupName/skill"><%= skill.name %></a>
+            <a href="<%= employee/profile/groupName/skill %>"><%= skill.name %></a>
             <a href="some remove">Remove</a>
             <a href="some update">Update</a>
             <% }); %> <% } %>
             <h3>Create A skill</h3>
-            <form action="/employer/group" method="post">
-                <label for="createSkill">
+            <form action="/employee/addJob" method="post">
+                <label for="addSkill">
                     <span>Skill Name:</span>
-                    <input type="text" id="name" name="name" />
-                    <button>Create Skill</button>
+                    <input type="text" id="skillName" name="skillName" />
+                    <button>Add Skill</button>
                 </label>
             </form>
         </main>

@@ -1,13 +1,13 @@
-const employeeModel = require('./../models/employee');
-const employerModel = require('./../models/employer');
+const EmployeeModel = require('./../models/employee');
+const EmployerModel = require('./../models/employer');
 
 exports.createUser = async (req, res, next) => {
     try {
         console.log(req.body.signupcheck);
         if (req.body.signupcheck == 'employee') {
-            const newEmployee = await employeeModel.create(req.body);
+            const newEmployee = await EmployeeModel.create(req.body);
         } else {
-            const newEmployer = await employerModel.create(req.body);
+            const newEmployer = await EmployerModel.create(req.body);
         }
         res.redirect('/');
     } catch (e) {
@@ -23,7 +23,7 @@ exports.userLogin = async (req, res, next) => {
         const username = req.body.uname;
         const password = req.body.pass;
         if (req.body.logincheck == 'employee') {
-            const employee = await employeeModel.findOne({
+            const employee = await EmployeeModel.findOne({
                 uname: new RegExp('^' + username + '$', 'i')
             });
             //console.log(employee);
@@ -42,7 +42,7 @@ exports.userLogin = async (req, res, next) => {
                 res.render('index', { data: 'incorrect username or password' });
             }
         } else {
-            const employer = await employerModel.findOne({
+            const employer = await EmployerModel.findOne({
                 uname: new RegExp('^' + username + '$', 'i')
             });
             //console.log(employer);

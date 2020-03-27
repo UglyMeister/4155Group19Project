@@ -17,7 +17,7 @@
             <% if(numberOfGroups > 0) { %>
             <form action="/<%= type %>/group" method='get'>
                 <% groups.forEach(function(group) { %>
-                    <button value="<%= group._id%>" id='groupId' name='groupId'><%= group.groupName %></button>
+                    <button value="<%= group._id%>" id='groupID' name='groupID'><%= group.name %></button>
                 <% }); %>
             </form>
              <% } else { %>
@@ -28,7 +28,7 @@
             <form action="/employee/" method="post">
                 <label for="AddGroup">
                     <span>Job Code:</span>
-                    <input type="text" id="groupId" name="groupId" />
+                    <input type="text" id="groupID" name="groupID" />
                     <button>Add Job</button>
                 </label>
             </form>
@@ -36,7 +36,7 @@
             <form action="/employer/" method="post">
                 <label for="createGroup">
                     <span>Job Name:</span>
-                    <input type="text" id="groupName" name="groupName" />
+                    <input type="text" id="name" name="name" />
                     <button>Create Job</button>
                 </label>
             </form>

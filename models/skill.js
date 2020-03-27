@@ -13,14 +13,13 @@ var skillsSchema = new mongoose.Schema(
         userIDs: [
             {
                 type: ObjectId,
-                ref: 'Employee'
+                ref: 'EmployeeModel'
             }
         ],
         shiftsNeeded: [],
         shiftCount: [],
         description: {
-            type: String,
-            required: true
+            type: String
         }
     },
     { collection: 'skills' }
