@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.route('/').get(userController.getProfile).post(userController.createJob);
 
-router.route('/group').get(userController.jobPage).post(userController.createSkill);
+router.route('/group').get(userController.employerJobPage).post(userController.createSkill);
 
 router.route('/profile/:groupName/skill');
 

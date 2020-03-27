@@ -57,7 +57,31 @@ exports.addJob = async (req, res, next) => {
     });
 };
 
-exports.jobPage = async (req, res, next) => {
+exports.employeeJobPage = async (req, res, next) => {
+    try {
+        if (req.session.profile) {
+            req.session.currentGroup = await GroupModel.findById(req.query.groupID);
+            req.session.groupSkillNames = await SkillModel.find(
+                { _id: { $in: req.session.currentGroup.skillIDs } },
+                { name: 1 }
+            );
+
+            res.render('groupPage', {
+                jobCode: req.session.currentGroup._id,
+                type: req.session.type,
+                employee: req.session.profile,
+                skills: req.session.groupSkillNames,
+                name: req.session.currentGroup.name
+            });
+        } else {
+            res.render('index', { data: 'error, not logged in, please log in' });
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+exports.employerJobPage = async (req, res, next) => {
     try {
         if (req.session.profile) {
             req.session.currentGroup = await GroupModel.findById(req.query.groupID);

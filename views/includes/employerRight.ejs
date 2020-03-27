@@ -16,8 +16,11 @@
                 up</span
             >
             <% } else { %> <% employees.forEach(function(employee) {%>
-            <a href="/employer/profile/groupName/employee"><%= employee.name %></a>
-            <a href="some remove">Remove</a>
+            <form>
+                <!--Will want to change later maybe make into a link to see employee profile? -->
+                <span><%= employee.name %></span>
+                <button value='<%= employee._id %>' id='removeEmployee' name='removeEmployee'>Remove</button>
+            </form>
             <% }); %> <% } %>
         </main>
         <footer id="footer"></footer>
