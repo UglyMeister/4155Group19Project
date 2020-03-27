@@ -32,13 +32,50 @@ var employeeSchema = new mongoose.Schema(
                 ref: 'SkillsModel'
             }
         ],
-        monAvail: [],
-        tueAvail: [],
-        wedAvail: [],
-        thAvail: [],
-        friAvail: [],
-        satAvail: [],
-        sunAvail: []
+        Availability: {
+            monAvail: [
+                {
+                    type: Number,
+                    default: 0
+                }
+            ],
+            tueAvail: [
+                {
+                    type: Number,
+                    default: 0
+                }
+            ],
+            wedAvail: [
+                {
+                    type: Number,
+                    default: 0
+                }
+            ],
+            thAvail: [
+                {
+                    type: Number,
+                    default: 0
+                }
+            ],
+            friAvail: [
+                {
+                    type: Number,
+                    default: 0
+                }
+            ],
+            satAvail: [
+                {
+                    type: Number,
+                    default: 0
+                }
+            ],
+            sunAvail: [
+                {
+                    type: Number,
+                    default: 0
+                }
+            ]
+        }
     },
     { collection: 'employee' }
 );
