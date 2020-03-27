@@ -9,17 +9,17 @@ const ObjectId = Schema.Types.ObjectId;
 
 var skillsSchema = new mongoose.Schema(
     {
+        name: String,
         userIDs: [
             {
                 type: ObjectId,
-                ref: 'Employee'
+                ref: 'EmployeeModel'
             }
         ],
         shiftsNeeded: [],
         shiftCount: [],
         description: {
-            type: String,
-            required: true
+            type: String
         }
     },
     { collection: 'skills' }

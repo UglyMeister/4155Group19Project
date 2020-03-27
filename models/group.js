@@ -8,18 +8,18 @@ const ObjectId = Schema.Types.ObjectId;
 
 var groupsSchema = new Schema(
     {
-        groupName: String,
-        ownerId: {
+        name: String,
+        ownerID: {
             type: ObjectId,
             ref: 'EmployerModel'
         },
-        memberIds: [
+        memberIDs: [
             {
                 type: ObjectId,
-                ref: 'Employee'
+                ref: 'EmployeeModel'
             }
         ],
-        skillIds: [
+        skillIDs: [
             {
                 type: ObjectId,
                 ref: 'SkillsModel'

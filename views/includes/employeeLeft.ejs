@@ -1,0 +1,30 @@
+<html>
+    <!--/Product Details page-->
+    <head>
+        <title>Smart Boss</title>
+        <%- include('./head.ejs') %>
+    </head>
+    <!--/body-->
+    <body>
+        <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
+        <main>
+            <h3>Skills</h3>
+            <% if(skills.length < 1) { %>
+            <span>No skills created talk to manager to add skills</span>
+            <% } else { %> 
+            <form action='/employee/group/skills' method='get'>
+            <% skills.forEach(function(skill) {%>
+            <span><%= skill.name %></span>
+            <input type="hidden" id="skillID" name ="skillID" value='<%= skill._id %>'/>
+            <% if(employee.skillIDs.includes(skill._id)) { %>
+            <button value='remove' id='skillUpdate' name='skillUpdate'>remove</button>
+            <% } else { %>
+            <button value='add' id='skillUpdate' name='skillUpdate'>Add skill</button>
+            <% } %>
+            <% }); %> 
+            </form>
+            <% } %>
+        </main>
+        <footer id="footer"></footer>
+    </body>
+</html>

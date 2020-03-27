@@ -1,0 +1,28 @@
+<html>
+    <!--/Product Details page-->
+    <head>
+        <title>Smart Boss</title>
+        <%- include('./head.ejs') %>
+    </head>
+    <!--/body-->
+    <body>
+        <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
+
+        <main>
+            <h3>Employees</h3>
+            <% if(employees.length < 1) { %>
+            <span
+                >No employees have joined this group give them the job code and have them sign
+                up</span
+            >
+            <% } else { %> <% employees.forEach(function(employee) {%>
+            <form>
+                <!--Will want to change later maybe make into a link to see employee profile? -->
+                <span><%= employee.name %></span>
+                <button value='<%= employee._id %>' id='removeEmployee' name='removeEmployee'>Remove</button>
+            </form>
+            <% }); %> <% } %>
+        </main>
+        <footer id="footer"></footer>
+    </body>
+</html>
