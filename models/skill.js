@@ -20,43 +20,43 @@ var skillsSchema = new mongoose.Schema(
             monShift: [
                 {
                     shiftsNeeded: [],
-                    shiftCount: []
+                    shiftCount: Number
                 }
             ],
             tueShift: [
                 {
                     shiftsNeeded: [],
-                    shiftCount: []
+                    shiftCount: Number
                 }
             ],
             wedShift: [
                 {
                     shiftsNeeded: [],
-                    shiftCount: []
+                    shiftCount: Number
                 }
             ],
             thShift: [
                 {
                     shiftsNeeded: [],
-                    shiftCount: []
+                    shiftCount: Number
                 }
             ],
             friShift: [
                 {
                     shiftsNeeded: [],
-                    shiftCount: []
+                    shiftCount: Number
                 }
             ],
             satShift: [
                 {
                     shiftsNeeded: [],
-                    shiftCount: []
+                    shiftCount: Number
                 }
             ],
             sunShift: [
                 {
                     shiftsNeeded: [],
-                    shiftCount: []
+                    shiftCount: Number
                 }
             ]
         },

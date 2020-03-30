@@ -65,6 +65,8 @@ exports.employeeJobPage = async (req, res, next) => {
                 { name: 1 }
             );
 
+            req.session.profile = await EmployeeModel.findById(req.session.profile._id);
+
             res.render('groupPage', {
                 jobCode: req.session.currentGroup._id,
                 type: req.session.type,
@@ -220,11 +222,8 @@ exports.deleteSkillPage = async (req, res) => {
 };
 
 exports.updateSkillPage = async (req, res) => {
-    res.render('groupPage', {
-        jobCode: req.session.currentGroup._id,
-        type: req.session.type,
-        skills: req.session.groupSkillNames,
-        employees: req.session.groupEmployeeNames,
-        name: req.session.currentGroup.name
+    const updateSkill = await SkillModel.findByID(req.query.skillID);
+    res.render('skillPage', {
+        skill: updateSkill
     });
 };
