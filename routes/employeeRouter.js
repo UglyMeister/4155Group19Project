@@ -10,8 +10,6 @@ router.route('/group').get(userController.employeeJobPage);
 
 router.route('/group/skills').get(userController.employeeUpdateSkill);
 
-router.route('/:groupName/skills');
-
-router.route('/:groupName/hours');
+router.route('/group/availability').post(userController.updateAvailability);
 
 module.exports = router;
