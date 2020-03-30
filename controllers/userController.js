@@ -10,7 +10,6 @@ exports.getProfile = async (req, res, next) => {
                 { _id: { $in: req.session.profile.groupIDs } },
                 { name: 1 }
             );
-            console.log(req.session.groupNames);
             res.render('profile', {
                 type: req.session.type,
                 groups: req.session.groupNames,
@@ -59,7 +58,6 @@ exports.addJob = async (req, res, next) => {
 
 exports.employeeJobPage = async (req, res, next) => {
     try {
-        console.log('test');
         if (req.session.profile) {
             req.session.currentGroup = await GroupModel.findById(req.query.groupID);
             req.session.groupSkillNames = await SkillModel.find(
@@ -142,6 +140,51 @@ exports.employeeUpdateSkill = async (req, res, next) => {
 
     req.session.profile = await EmployeeModel.findById(req.session.profile._id);
 
+    res.render('groupPage', {
+        jobCode: req.session.currentGroup._id,
+        type: req.session.type,
+        employee: req.session.profile,
+        skills: req.session.groupSkillNames,
+        name: req.session.currentGroup.name
+    });
+};
+
+exports.updateAvailability = async (req, res, next) => {
+    var monAvail = [],
+        tueAvail = [],
+        wedAvail = [],
+        thAvail = [],
+        friAvail = [],
+        satAvail = [],
+        sunAvail = [];
+
+    function formatTimes(times) {
+        monAvail.push(times[0]);
+        tueAvail.push(times[1]);
+        wedAvail.push(times[2]);
+        thAvail.push(times[3]);
+        friAvail.push(times[4]);
+        satAvail.push(times[5]);
+        sunAvail.push(times[6]);
+    }
+
+    formatTimes(req.body.HoursStart);
+    formatTimes(req.body.MinutesStart);
+    formatTimes(req.body.HalfStart);
+    formatTimes(req.body.HoursEnd);
+    formatTimes(req.body.MinutesEnd);
+    formatTimes(req.body.HalfEnd);
+
+    req.body.monAvail = monAvail;
+    req.body.tueAvail = tueAvail;
+    req.body.wedAvail = wedAvail;
+    req.body.thAvail = thAvail;
+    req.body.friAvail = friAvail;
+    req.body.satAvail = satAvail;
+    req.body.sunAvail = sunAvail;
+
+    await EmployeeModel.findByIdAndUpdate(req.session.profile._id, req.body);
+    req.session.profile = await EmployeeModel.findById(req.session.profile._id);
     res.render('groupPage', {
         jobCode: req.session.currentGroup._id,
         type: req.session.type,
