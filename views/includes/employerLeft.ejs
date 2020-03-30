@@ -13,11 +13,11 @@
             <span>No skills created please create some</span>
             <% } else { %> <% skills.forEach(function(skill) {%>
             <span><%= skill.name %></span>
-            <form action='/employer/group' method='patch'>
-                <button value='<%= skill._id %>'>update</button>
+            <form action='/employer/group/skill' method='get'>
+                <button value='<%= skill._id %>' name='skillID'>update</button>
             </form>
-            <form action='/employer/group' method='delete'>
-                <button value='<%= skill._id %>'>remove</button>
+            <form action='/employer/group/skill' method='post'>
+                <button value='<%= skill._id %>' name='skillID'>remove</button>
             </form>
             <% }); %> <% } %>
             <h3>Create A skill</h3>

@@ -193,3 +193,38 @@ exports.updateAvailability = async (req, res, next) => {
         name: req.session.currentGroup.name
     });
 };
+
+exports.deleteSkillPage = async (req, res) => {
+    await GroupModel.findByIdAndUpdate(req.session.currentGroup._id, {
+        $pull: { skillIDs: req.body.skillID }
+    });
+    await EmployeeModel.updateMany(
+        {
+            $and: [
+                { _id: { $in: req.session.groupEmployeeNames._id } },
+                { skillIDs: req.body.skillID }
+            ]
+        },
+        { $pull: { skillIDs: req.body.skillID } }
+    );
+    removeSkill = await SkillModel.findByIdAndDelete(req.body.skillID);
+    req.session.groupSkillNames.splice(req.session.groupSkillNames.indexOf(removeSkill));
+
+    res.render('groupPage', {
+        jobCode: req.session.currentGroup._id,
+        type: req.session.type,
+        skills: req.session.groupSkillNames,
+        employees: req.session.groupEmployeeNames,
+        name: req.session.currentGroup.name
+    });
+};
+
+exports.updateSkillPage = async (req, res) => {
+    res.render('groupPage', {
+        jobCode: req.session.currentGroup._id,
+        type: req.session.type,
+        skills: req.session.groupSkillNames,
+        employees: req.session.groupEmployeeNames,
+        name: req.session.currentGroup.name
+    });
+};

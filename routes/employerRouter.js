@@ -8,8 +8,9 @@ router.route('/').get(userController.getProfile).post(userController.createJob);
 
 router.route('/group').get(userController.employerJobPage).post(userController.createSkill);
 
-router.route('/profile/:groupName/skill');
-
-router.route('/profile/:groupName/employee');
+router
+    .route('/group/skill')
+    .get(userController.updateSkillPage)
+    .post(userController.deleteSkillPage);
 
 module.exports = router;
