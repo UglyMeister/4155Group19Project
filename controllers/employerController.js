@@ -4,7 +4,7 @@ exports.getEmployer = async (req, res) => {
     try {
         const employer = await EmployerModel.findById(req.params.uname);
         if (employer.uname === req.params.query) {
-            res.render('employer');
+            res.render('employer', {data: '', loggedIn: true});
         }
     } catch (e) {
         console.log(e);
