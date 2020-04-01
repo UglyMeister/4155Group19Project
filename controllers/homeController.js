@@ -12,7 +12,8 @@ exports.createUser = async (req, res, next) => {
         res.redirect('/');
     } catch (e) {
         res.render('signup', {
-            data: 'a user with that username/email already exists, please enter a new username'
+            data: 'a user with that username/email already exists, please enter a new username',
+            loggedIn: false
         });
         console.log(e);
     }
@@ -39,7 +40,7 @@ exports.userLogin = async (req, res, next) => {
                 //res.render('employee');
                 res.redirect('/employee/');
             } else {
-                res.render('index', { data: 'incorrect username or password' });
+                res.render('index', { data: 'incorrect username or password', loggedIn: false });
             }
         } else {
             const employer = await EmployerModel.findOne({
@@ -54,7 +55,7 @@ exports.userLogin = async (req, res, next) => {
                 res.redirect('/employer/');
                 //res.render('employer');
             } else {
-                res.render('index', { data: 'incorrect username or password' });
+                res.render('index', { data: 'incorrect username or password', loggedIn: false });
             }
         }
     } catch (e) {
