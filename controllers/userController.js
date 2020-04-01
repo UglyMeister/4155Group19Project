@@ -221,9 +221,22 @@ exports.deleteSkillPage = async (req, res) => {
     });
 };
 
-exports.updateSkillPage = async (req, res) => {
-    const updateSkill = await SkillModel.findById(req.query.skillID);
+exports.getUpdateSkillPage = async (req, res) => {
+    req.session.currentSkill = await SkillModel.findById(req.query.skillID);
+
     res.render('skillPage', {
-        skill: updateSkill
+        skill: req.session.currentSkill
+    });
+};
+
+exports.updateSkillPage = async (req, res) => {
+    const skill = await SkillModel.findByIdAndUpdate(req.session.currentSkill._id, req.body);
+
+    res.render('groupPage', {
+        jobCode: req.session.currentGroup._id,
+        type: req.session.type,
+        skills: req.session.groupSkillNames,
+        employees: req.session.groupEmployeeNames,
+        name: req.session.currentGroup.name
     });
 };

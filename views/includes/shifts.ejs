@@ -14,7 +14,7 @@
 <label for="<% dayAvail[day] %>Start ">
                             <span>Monday:</span>
                             <%const val = skill[dayAvail[day]]%>
-                            <select id="<%dayAvail[day]%>HoursStart"  name='<%dayAvail[day]%>HoursStart' >
+                            <select id="<%- dayAvail[day]%>HoursStart"  name='<%- dayAvail[day]%>HoursStart' >
                                 <option value="0" <%= (val[0] == 0)?'selected':'' %>>12</option>
                                 <option value="1" <%= (val[0] == 1)?'selected':'' %>>1</option>
                                 <option value="2" <%= (val[0] == 2)?'selected':'' %>>2</option>
@@ -29,19 +29,19 @@
                                 <option value="11" <%= (val[0] == 11)?'selected':'' %>>11</option>
                             </select>
                             <span>:</span>
-                            <select id="<%dayAvail[day]%>MinutesStart"  name="<%dayAvail[day]%>MinutesStart">
+                            <select id="<%- dayAvail[day]%>MinutesStart"  name="<%- dayAvail[day]%>MinutesStart">
                                 <option value="0" <%= (val[1] == 11)?'selected':'' %>>00</option>
                                 <option value="15" <%= (val[1] == 15)?'selected':'' %>>15</option>
                                 <option value="30" <%= (val[1] == 30)?'selected':'' %>>30</option>
                                 <option value="45" <%= (val[1] == 45)?'selected':'' %>>45</option>
                             </select>
-                            <select id="<%dayAvail[day]%>HalfStart"  name="<%dayAvail[day]%>HalfStart">
+                            <select id="<%- dayAvail[day]%>HalfStart"  name="<%- dayAvail[day]%>HalfStart">
                                 <option value="0" <%= (val[2] == 0)?'selected':'' %>>AM</option>
                                 <option value="1" <%= (val[2] == 1)?'selected':'' %>>PM</option>
                             </select>
                             <h3> TO </h3>
                             <label for="<%dayAvail[day]%>End">
-                            <select id="<%dayAvail[day]%>HoursEnd"  name="<%dayAvail[day]%>HoursEnd">
+                            <select id="<%- dayAvail[day]%>HoursEnd"  name="<%- dayAvail[day]%>HoursEnd">
                                 <option value="0" <%= (val[3] == 0)?'selected':'' %>>12</option>
                                 <option value="1" <%= (val[3] == 1)?'selected':'' %>>1</option>
                                 <option value="2" <%= (val[3] == 2)?'selected':'' %>>2</option>
@@ -56,13 +56,13 @@
                                 <option value="11" <%= (val[3] == 11)?'selected':'' %>>11</option>
                             </select>
                             <span>:</span>
-                            <select id="<%dayAvail[day]%>MinutesEnd"  name="<%dayAvail[day]%>MinutesEnd">
+                            <select id="<%- dayAvail[day]%>MinutesEnd"  name="<%- dayAvail[day]%>MinutesEnd">
                                 <option value="0" <%= (val[4] == 0)?'selected':'' %>>00</option>
                                 <option value="15" <%= (val[4] == 15)?'selected':'' %>>15</option>
                                 <option value="30" <%= (val[4] == 30)?'selected':'' %>>30</option>
                                 <option value="45" <%= (val[4] == 45)?'selected':'' %>>45</option>
                             </select>
-                            <select id="<%dayAvail[day]%>HalfEnd" name="<%dayAvail[day]%>HalfEnd">
+                            <select id="<%- dayAvail[day]%>HalfEnd" name="<%- dayAvail[day]%>HalfEnd">
                                 <option value="0" <%= (val[5] == 0)?'selected':'' %>>AM</option>
                                 <option value="1" <%= (val[5] == 1)?'selected':'' %>>PM</option>
                             </select>

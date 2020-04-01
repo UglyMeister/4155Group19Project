@@ -10,7 +10,8 @@ router.route('/group').get(userController.employerJobPage).post(userController.c
 
 router
     .route('/group/skill')
-    .get(userController.updateSkillPage)
-    .post(userController.deleteSkillPage);
+    .get(userController.getUpdateSkillPage)
+    .post(userController.deleteSkillPage)
+    .patch(userController.updateSkillPage);
 
 module.exports = router;
