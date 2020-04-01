@@ -48,5 +48,10 @@ function updateSkill() {
             satShift: satShift,
             sunShift: sunShift
         }
+    }).then((res) => {
+        //const groupData = res.data.data;
+        //console.log(groupData);
+        //render('groupPage', groupData);
+        window.location = '/employer/group';
     });
 }
