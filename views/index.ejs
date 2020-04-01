@@ -1,43 +1,40 @@
 <html>
-<!--/Product Details page-->  
-<head>
-    <title>Smart Boss</title> 
-    <%- include('includes/head.ejs') %>
-       
+    <!--/Product Details page-->
+    <head>
+        <title>Smart Boss</title>
+        <%- include('includes/head.ejs') %>
+    </head>
+     <%- include('includes/nav.ejs') %>    
 
-</head>
-<!--/body-->    
-<body>
-<!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->   
-    <%- include('includes/nav.ejs') %>    
-
-    <main>
-        <section id="login">
-            <h1>Login</h1>
-            <h4><%= data %></h4>
-            <form action='/login' method='post'>
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="uname" name="uname" required></br>
+        <body class="text-center">
+        <form action="/login" method="post" class="form-signin">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="uname" class="sr-only">Username</label>
+            <input
+                type="text"
+                id="uname"
+                name="uname"
+                class="form-control"
+                placeholder="Username"
+                required
+                autofocus
+            />
+            <label for="pass" class="sr-only">Password</label>
+            <input
+                type="password"
+                id="pass"
+                name="pass"
+                class="form-control"
+                placeholder="Password"
+                required
+            />
+            <div class="radio mb-3">
+                <input type="radio" id="employee" name="logincheck" value="employee" checked />
+                Employee<br />
+                <input type="radio" id="employer" name="logincheck" value="employer" />
+                Employer<br />
             </div>
-            <div>
-                <label for="pass">Password:</label>
-                <input type="password" id="pass" name="pass"></br>
-            </div>
-            <div>
-                <input type='radio' id="employee" name="logincheck" value="employee" checked> Employee<br>
-                <input type='radio' id="employer" name="logincheck" value="employer"> Employer<br>
-            </div>
-            <div>
-                <button type="submit">Login</button></br>
-            </div>
-            </form>
-            <div>
-                <a href='/signup'>New? Sign up here</a>
-            </div>
-        </section>
-    </main>
-    <footer id="footer">
-    </footer>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
     </body>
 </html>
