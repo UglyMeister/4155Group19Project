@@ -222,7 +222,7 @@ exports.deleteSkillPage = async (req, res) => {
 };
 
 exports.updateSkillPage = async (req, res) => {
-    const updateSkill = await SkillModel.findByID(req.query.skillID);
+    const updateSkill = await SkillModel.findById(req.query.skillID);
     res.render('skillPage', {
         skill: updateSkill
     });
