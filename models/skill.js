@@ -16,49 +16,33 @@ var skillsSchema = new mongoose.Schema(
                 ref: 'EmployeeModel'
             }
         ],
-        shifts: {
-            monShift: [
-                {
-                    shiftsNeeded: [],
-                    shiftCount: []
-                }
-            ],
-            tueShift: [
-                {
-                    shiftsNeeded: [],
-                    shiftCount: []
-                }
-            ],
-            wedShift: [
-                {
-                    shiftsNeeded: [],
-                    shiftCount: []
-                }
-            ],
-            thShift: [
-                {
-                    shiftsNeeded: [],
-                    shiftCount: []
-                }
-            ],
-            friShift: [
-                {
-                    shiftsNeeded: [],
-                    shiftCount: []
-                }
-            ],
-            satShift: [
-                {
-                    shiftsNeeded: [],
-                    shiftCount: []
-                }
-            ],
-            sunShift: [
-                {
-                    shiftsNeeded: [],
-                    shiftCount: []
-                }
-            ]
+        monShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        tueShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        wedShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        thShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        friShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        satShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        sunShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
         },
         description: {
             type: String
