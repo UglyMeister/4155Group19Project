@@ -1,13 +1,13 @@
-const employeeModel = require('./../models/employee');
-const employerModel = require('./../models/employer');
+const EmployeeModel = require('./../models/employee');
+const EmployerModel = require('./../models/employer');
 
 exports.createUser = async (req, res, next) => {
     try {
-        console.log(req.body.signupcheck);
+        console.log(req.body);
         if (req.body.signupcheck == 'employee') {
-            const newEmployee = await employeeModel.create(req.body);
+            const newEmployee = await EmployeeModel.create(req.body);
         } else {
-            const newEmployer = await employerModel.create(req.body);
+            const newEmployer = await EmployerModel.create(req.body);
         }
         res.redirect('/');
     } catch (e) {
@@ -23,7 +23,7 @@ exports.userLogin = async (req, res, next) => {
         const username = req.body.uname;
         const password = req.body.pass;
         if (req.body.logincheck == 'employee') {
-            const employee = await employeeModel.findOne({
+            const employee = await EmployeeModel.findOne({
                 uname: new RegExp('^' + username + '$', 'i')
             });
             //console.log(employee);
@@ -37,12 +37,12 @@ exports.userLogin = async (req, res, next) => {
                 //console.log('test');
                 //WANT TO CHANGE THIS TO A REDIRECT TO /PROFILE, SHOULD ALSO BE THE SAME FOR THE EMPLOYER VIEW
                 //res.render('employee');
-                res.redirect('/employee/profile');
+                res.redirect('/employee/');
             } else {
                 res.render('index', { data: 'incorrect username or password' });
             }
         } else {
-            const employer = await employerModel.findOne({
+            const employer = await EmployerModel.findOne({
                 uname: new RegExp('^' + username + '$', 'i')
             });
             //console.log(employer);
@@ -51,7 +51,7 @@ exports.userLogin = async (req, res, next) => {
                 req.session.type = 'employer';
                 console.log(req.session.profile);
                 req.session.save();
-                res.redirect('/employer/profile');
+                res.redirect('/employer/');
                 //res.render('employer');
             } else {
                 res.render('index', { data: 'incorrect username or password' });

@@ -3,13 +3,12 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
     useNewUrlParser: true
 });
 
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
+
 var employeeSchema = new mongoose.Schema(
     {
         name: String,
-        id: {
-            type: Number,
-            unique: true
-        },
         email: {
             type: String,
             unique: true,
@@ -21,19 +20,50 @@ var employeeSchema = new mongoose.Schema(
             required: true
         },
         pass: String,
-        groupIDs: [],
-        skillIDs: [],
-        monAvail: [],
-        tueAvail: [],
-        wedAvail: [],
-        thAvail: [],
-        friAvail: [],
-        satAvail: [],
-        sunAvail: []
+        groupIDs: [
+            {
+                type: ObjectId,
+                ref: 'GroupsModel'
+            }
+        ],
+        skillIDs: [
+            {
+                type: ObjectId,
+                ref: 'SkillsModel'
+            }
+        ],
+        monAvail: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        tueAvail: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        wedAvail: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        thAvail: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        friAvail: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        satAvail: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        sunAvail: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        }
     },
     { collection: 'employee' }
 );
 
-const Employee = mongoose.model('Employee', employeeSchema);
+const EmployeeModel = mongoose.model('Employee', employeeSchema);
 
-module.exports = Employee;
+module.exports = EmployeeModel;

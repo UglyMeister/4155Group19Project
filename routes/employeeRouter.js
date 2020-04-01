@@ -4,10 +4,12 @@ const userController = require('./../controllers/userController');
 
 const router = express.Router();
 
-router.route('/profile').get(userController.getProfile);
+router.route('/').get(userController.getProfile).post(userController.addJob);
 
-router.route('/employee/:id/editSkills');
+router.route('/group').get(userController.employeeJobPage);
 
-router.route('/employee/:id/editAssociates');
+router.route('/group/skills').get(userController.employeeUpdateSkill);
+
+router.route('/group/availability').post(userController.updateAvailability);
 
 module.exports = router;

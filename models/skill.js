@@ -4,15 +4,48 @@ mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r
 });
 //var db = mongoose.connection;
 
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
+
 var skillsSchema = new mongoose.Schema(
     {
-        groupID: Number,
-        userIDs: [],
-        shiftsNeeded: [],
-        shiftCount: [],
+        name: String,
+        userIDs: [
+            {
+                type: ObjectId,
+                ref: 'EmployeeModel'
+            }
+        ],
+        monShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        tueShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        wedShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        thShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        friShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        satShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
+        sunShift: {
+            type: [Number],
+            default: [0, 0, 0, 0, 0, 0]
+        },
         description: {
-            type: String,
-            required: true
+            type: String
         }
     },
     { collection: 'skills' }

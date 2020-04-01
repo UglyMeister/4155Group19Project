@@ -4,10 +4,14 @@ const userController = require('./../controllers/userController');
 
 const router = express.Router();
 
-router.route('/profile').get(userController.getProfile);
+router.route('/').get(userController.getProfile).post(userController.createJob);
 
-router.route('/employer/:id/editSkills');
+router.route('/group').get(userController.employerJobPage).post(userController.createSkill);
 
-router.route('/employer/:id/editAssociates');
+router
+    .route('/group/skill')
+    .get(userController.getUpdateSkillPage)
+    .post(userController.deleteSkillPage)
+    .patch(userController.updateSkillPage);
 
 module.exports = router;

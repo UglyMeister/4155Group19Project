@@ -1,0 +1,39 @@
+<html>
+    <!--/Product Details page-->
+    <head>
+        <title>Smart Boss</title>
+        <%- include('includes/head.ejs') %>
+    </head>
+    <!--/body-->
+    <body>
+        <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
+        <%- include('includes/nav.ejs') %>
+
+        <main>
+            <h1>Smart Boss</h1>
+            <h2><%- name %></h2>
+            <h3>Job Code: <%- jobCode %></h3>
+            <br />
+            <% if(type == 'employee') { %>
+            <div id="full">
+                <div id="leftHalf">
+                    <%- include('includes/employeeLeft.ejs')%>
+                </div>
+                <div id="rightHalf">
+                    <%- include('includes/employeeRight.ejs')%>
+                </div>
+            </div>
+            <% } else { %>
+            <div id="full">
+                <div id="leftHalf">
+                    <%- include('includes/employerLeft.ejs')%>
+                </div>
+                <div id="rightHalf">
+                    <%- include('includes/employerRight.ejs')%>
+                </div>
+            </div>
+            <% } %>
+        </main>
+        <footer id="footer"></footer>
+    </body>
+</html>
