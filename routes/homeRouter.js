@@ -34,7 +34,7 @@ router.route('/signup')
     })
     .post(homeController.createUser);
 
-router.get('/logout', function(req,res,next){
+router.get('/logout', function(req,res,next) {
     console.log('delete user from session');
     req.session.destroy;
     console.log('redirect to index');
