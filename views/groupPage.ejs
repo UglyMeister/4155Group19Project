@@ -8,32 +8,34 @@
     <body>
         <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
         <%- include('includes/nav.ejs') %>
-        <div class="a">
-
         <main>
             <h1>Smart Boss</h1>
             <h2><%- name %></h2>
+            <% if(type=='employer') { %> 
             <h3>Job Code: <%- jobCode %></h3>
             <br />
+            <% } %>
             <% if(type == 'employee') { %>
-            <div id="full">
-                <div id="leftHalf">
+            <div class="container">
+            <div class="full row">
+                <div class="leftHalf col-sm sol-md col-ls">
                     <%- include('includes/employeeLeft.ejs')%>
                 </div>
-                <div id="rightHalf">
+                <div class="rightHalf col-sm sol-md col-ls">
                     <%- include('includes/employeeRight.ejs')%>
                 </div>
             </div>
             <% } else { %>
-            <div id="full">
-                <div id="leftHalf">
+            <div class="full row">
+                <div class="leftHalf col-sm sol-md col-ls">
                     <%- include('includes/employerLeft.ejs')%>
                 </div>
-                <div id="rightHalf">
+                <div class="rightHalf col-sm sol-md col-ls">
                     <%- include('includes/employerRight.ejs')%>
                 </div>
             </div>
             <% } %>
+            </div>
         </main>
         <footer id="footer"></footer>
     </div>

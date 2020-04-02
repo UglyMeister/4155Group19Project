@@ -15,7 +15,7 @@
             <span>No skills created talk to manager to add skills</span>
             <% } else { %> 
             <% skills.forEach(function(skill) {%>
-            <form action='/employee/group/skills' method='get'>
+            <form id='employeeSkills' action='/employee/group/skills' method='get'>
             <span><%= skill.name %></span>
             <input type="hidden" id="skillID" name ="skillID" value='<%= skill._id %>'/>
             <% if(employee.skillIDs.includes(skill._id)) { %>
