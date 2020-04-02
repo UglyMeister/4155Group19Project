@@ -1,0 +1,10 @@
+// Variable Overrides
+$body-bg: #50b428;
+$body-color: rgb(91, 54, 177);
+
+// Custom.scss
+$theme-color: (
+    "primary": #d95700
+);
+// Option A: Include all of Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";

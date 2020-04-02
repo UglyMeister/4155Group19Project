@@ -8,17 +8,21 @@
     <body>
         <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
         <%- include('includes/nav.ejs') %>
+        <div class="a">
 
-        <main>
+        <main id='profile'>
+            <img class="mb-4" src="../resources/1.jpg" alt="" width="72" height="72">
             <h1>Smart Boss</h1>
             <h2>Welcome <%- name %></h2>
             <br />
             <h3>Jobs</h3>
             <% if(numberOfGroups > 0) { %>
             <form action="/<%= type %>/group" method='get'>
-                <% groups.forEach(function(group) { %>
-                    <button value="<%= group._id%>" id='groupID' name='groupID'><%= group.name %></button>
-                <% }); %>
+                <div class='list-group'>
+                    <% groups.forEach(function(group) { %>
+                        <button class='list-group-item list-group-item-action' value="<%= group._id%>" id='groupID' name='groupID'><%= group.name %></button>
+                    <% }); %>
+                </div>
             </form>
              <% } else { %>
             <span>No Jobs currently please create or add a job</span>
@@ -40,18 +44,9 @@
                     <button>Create Job</button>
                 </label>
             </form>
-            <% } %> <% if(type == 'employee') { %>
-            <form class="dropdown" action="/employee/schedule">
-                <label for="mon">Monday:</label>
-                <select id="mon">
-                    <option value="0000">12:00 am</option>
-                    <option value="0030">12:30 am</option>
-                    <option value="0100">1:00 am</option>
-                </select>
-                <button type="submit">Submit Changes</button>
-            </form>
-            <% } %>
-        </main>
+            <% } %> 
+            </main>
         <footer id="footer"></footer>
+    </div>
     </body>
 </html>
