@@ -14,10 +14,11 @@ exports.getProfile = async (req, res, next) => {
                 type: req.session.type,
                 groups: req.session.groupNames,
                 numberOfGroups: req.session.groupNames.length,
-                name: req.session.profile.name
+                name: req.session.profile.name,
+                loggedIn: req.session.loggedIn
             }); //this is temporary, will change later
         } else {
-            res.render('index', { data: 'error, not logged in, please log in' });
+            res.render('index', { data: 'error, not logged in, please log in', loggedIn: req.session.loggedIn });
         }
     } catch (e) {
         console.log(e);
@@ -35,7 +36,8 @@ exports.createJob = async (req, res, next) => {
             type: req.session.type,
             groups: req.session.groupNames,
             numberOfGroups: req.session.groupNames.length,
-            name: req.session.profile.name
+            name: req.session.profile.name,
+            loggedIn: req.session.loggedIn
         });
     } catch (e) {
         console.log(e);
@@ -52,7 +54,8 @@ exports.addJob = async (req, res, next) => {
         type: req.session.type,
         groups: req.session.groupNames,
         numberOfGroups: req.session.groupNames.length,
-        name: req.session.profile.name
+        name: req.session.profile.name,
+        loggedIn: req.session.loggedIn
     });
 };
 
@@ -73,10 +76,11 @@ exports.employeeJobPage = async (req, res, next) => {
                 type: req.session.type,
                 employee: req.session.profile,
                 skills: req.session.groupSkillNames,
-                name: req.session.currentGroup.name
+                name: req.session.currentGroup.name,
+                loggedIn: req.session.loggedIn
             });
         } else {
-            res.render('index', { data: 'error, not logged in, please log in' });
+            res.render('index', { data: 'error, not logged in, please log in', loggedIn: req.session.loggedIn });
         }
     } catch (e) {
         console.log(e);
@@ -102,10 +106,11 @@ exports.employerJobPage = async (req, res, next) => {
                 type: req.session.type,
                 skills: req.session.groupSkillNames,
                 employees: req.session.groupEmployeeNames,
-                name: req.session.currentGroup.name
+                name: req.session.currentGroup.name,
+                loggedIn: req.session.loggedIn
             });
         } else {
-            res.render('index', { data: 'error, not logged in, please log in' });
+            res.render('index', { data: 'error, not logged in, please log in', loggedIn: req.session.loggedIn });
         }
     } catch (e) {
         console.log(e);
@@ -124,7 +129,8 @@ exports.createSkill = async (req, res, next) => {
             type: req.session.type,
             skills: req.session.groupSkillNames,
             employees: req.session.groupEmployeeNames,
-            name: req.session.currentGroup.name
+            name: req.session.currentGroup.name,
+            loggedIn: req.session.loggedIn
         });
     } catch (e) {
         console.log(e);
@@ -149,7 +155,8 @@ exports.employeeUpdateSkill = async (req, res, next) => {
         type: req.session.type,
         employee: req.session.profile,
         skills: req.session.groupSkillNames,
-        name: req.session.currentGroup.name
+        name: req.session.currentGroup.name,
+        loggedIn: req.session.loggedIn
     });
 };
 
@@ -194,7 +201,8 @@ exports.updateAvailability = async (req, res, next) => {
         type: req.session.type,
         employee: req.session.profile,
         skills: req.session.groupSkillNames,
-        name: req.session.currentGroup.name
+        name: req.session.currentGroup.name,
+        loggedIn: req.session.loggedIn
     });
 };
 
@@ -219,7 +227,8 @@ exports.deleteSkillPage = async (req, res) => {
         type: req.session.type,
         skills: req.session.groupSkillNames,
         employees: req.session.groupEmployeeNames,
-        name: req.session.currentGroup.name
+        name: req.session.currentGroup.name,
+        loggedIn: req.session.loggedIn
     });
 };
 
@@ -228,6 +237,7 @@ exports.getUpdateSkillPage = async (req, res) => {
 
     console.log(req.session.currentGroup);
     res.render('skillPage', {
+        loggedIn: req.session.loggedIn
         jobCode: req.session.currentGroup._id,
         skill: req.session.currentSkill
     });

@@ -12,7 +12,8 @@ exports.createUser = async (req, res, next) => {
         res.redirect('/');
     } catch (e) {
         res.render('signup', {
-            data: 'a user with that username/email already exists, please enter a new username'
+            data: 'a user with that username/email already exists, please enter a new username',
+            loggedIn: req.session.loggedIn
         });
         console.log(e);
     }
@@ -31,6 +32,7 @@ exports.userLogin = async (req, res, next) => {
                 //session stuff added here
                 req.session.profile = employee;
                 req.session.type = 'employee';
+                req.session.loggedIn = true;
                 console.log(req.session.profile);
                 req.session.save();
                 //session stuff above
@@ -39,7 +41,7 @@ exports.userLogin = async (req, res, next) => {
                 //res.render('employee');
                 res.redirect('/employee/');
             } else {
-                res.render('index', { data: 'incorrect username or password' });
+                res.render('index', { data: 'incorrect username or password', loggedIn: req.session.loggedIn });
             }
         } else {
             const employer = await EmployerModel.findOne({
@@ -54,7 +56,7 @@ exports.userLogin = async (req, res, next) => {
                 res.redirect('/employer/');
                 //res.render('employer');
             } else {
-                res.render('index', { data: 'incorrect username or password' });
+                res.render('index', { data: 'incorrect username or password', loggedIn: req.session.loggedIn });
             }
         }
     } catch (e) {
