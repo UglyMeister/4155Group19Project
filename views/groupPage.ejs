@@ -15,20 +15,22 @@
             <h3>Job Code: <%- jobCode %></h3>
             <br />
             <% if(type == 'employee') { %>
-            <div id="full">
-                <div id="leftHalf">
+            <div class="container-fluid">
+            <div class="full">
+                <div class="leftHalf" >
                     <%- include('includes/employeeLeft.ejs')%>
                 </div>
-                <div id="rightHalf">
+                <div class="rightHalf" >
                     <%- include('includes/employeeRight.ejs')%>
                 </div>
             </div>
+            </div>
             <% } else { %>
-            <div id="full">
-                <div id="leftHalf">
+            <div class="full">
+                <div class="leftHalf">
                     <%- include('includes/employerLeft.ejs')%>
                 </div>
-                <div id="rightHalf">
+                <div class="rightHalf">
                     <%- include('includes/employerRight.ejs')%>
                 </div>
             </div>
