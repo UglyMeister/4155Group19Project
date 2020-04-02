@@ -70,6 +70,7 @@ exports.employeeJobPage = async (req, res, next) => {
 
             req.session.profile = await EmployeeModel.findById(req.session.profile._id);
 
+            req.session.save();
             res.render('groupPage', {
                 jobCode: req.session.currentGroup._id,
                 type: req.session.type,
@@ -89,7 +90,8 @@ exports.employeeJobPage = async (req, res, next) => {
 exports.employerJobPage = async (req, res, next) => {
     try {
         if (req.session.profile) {
-            req.session.currentGroup = await GroupModel.findById(req.query.groupID);
+            if (req.query.groupID != null)
+                req.session.currentGroup = await GroupModel.findById(req.query.groupID);
             req.session.groupSkillNames = await SkillModel.find(
                 { _id: { $in: req.session.currentGroup.skillIDs } },
                 { name: 1 }
@@ -230,10 +232,39 @@ exports.deleteSkillPage = async (req, res) => {
     });
 };
 
-exports.updateSkillPage = async (req, res) => {
-    const updateSkill = await SkillModel.findByID(req.query.skillID);
+exports.getUpdateSkillPage = async (req, res) => {
+    req.session.currentSkill = await SkillModel.findById(req.query.skillID);
+
+    console.log(req.session.currentGroup);
     res.render('skillPage', {
-        skill: updateSkill,
         loggedIn: req.session.loggedIn
+        jobCode: req.session.currentGroup._id,
+        skill: req.session.currentSkill
     });
+};
+
+exports.updateSkillPage = async (req, res) => {
+    try {
+        const test = await SkillModel.findByIdAndUpdate(req.session.currentSkill._id, req.body);
+
+        /*res.render('groupPage', {*/
+        //jobCode: req.session.currentGroup._id,
+        //type: req.session.type,
+        //skills: req.session.groupSkillNames,
+        //employees: req.session.groupEmployeeNames,
+        //name: req.session.currentGroup.name
+        /*});*/
+        res.status(200).json({
+            status: 'success',
+            data: {
+                jobCode: req.session.currentGroup._id,
+                type: req.session.type,
+                skills: req.session.groupSkillNames,
+                employees: req.session.groupEmployeeNames,
+                name: req.session.currentGroup.name
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
 };
