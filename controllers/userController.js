@@ -237,7 +237,7 @@ exports.getUpdateSkillPage = async (req, res) => {
 
     console.log(req.session.currentGroup);
     res.render('skillPage', {
-        loggedIn: req.session.loggedIn
+        loggedIn: req.session.loggedIn,
         jobCode: req.session.currentGroup._id,
         skill: req.session.currentSkill
     });
