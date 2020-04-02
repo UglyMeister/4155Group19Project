@@ -9,6 +9,9 @@
       <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" href="/about">About</a>
       <a class="nav-item nav-link" href="/help">Help</a>
+      <% if(loggedIn == true){ %>
+        <a class="nav-item nav-link" href="/logout">Logout</a>
+      <% } %>
     </div>
   </div>
 </nav>
