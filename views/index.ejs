@@ -31,10 +31,14 @@
                 required
             />
             <div class="radio mb-3">
-                <input type="radio" id="employee" name="logincheck" value="employee" checked />
-                Employee<br />
-                <input type="radio" id="employer" name="logincheck" value="employer" />
-                Employer<br />
+                <label class="radio-inline">
+                    <input type="radio" id="employee" name="logincheck" value="employee" checked />
+                    Employee<br />
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="employer" name="logincheck" value="employer" />
+                    Employer<br />
+                    </label>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <a href="/signup">New? Sign up here<a>
