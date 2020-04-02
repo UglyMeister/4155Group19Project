@@ -48,7 +48,6 @@ router.route('/signup')
 router.get('/logout', function(req,res,next) {
     console.log('delete user from session');
     req.session.destroy();
-    //req.session.loggedIn = false;
     console.log('redirect to index');
     res.redirect('/');
 });
