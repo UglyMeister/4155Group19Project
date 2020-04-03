@@ -16,6 +16,7 @@ exports.showScheduleMaker = async (req, res, next) => {
     try {
         if(req.session.profile) {
             //need to display the page with the different skills as selectable options
+            res.render('employer');
         }
     } catch (e) {
         console.log(e);
