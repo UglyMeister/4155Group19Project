@@ -11,3 +11,13 @@ exports.generateSchedule = async (req, res, next) => {
         console.log(e);
     }
 }
+
+exports.showScheduleMaker = async (req, res, next) => {
+    try {
+        if(req.session.profile) {
+            //need to display the page with the different skills as selectable options
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}

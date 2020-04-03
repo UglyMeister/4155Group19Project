@@ -14,4 +14,7 @@ router
     .post(userController.deleteSkillPage)
     .patch(userController.updateSkillPage);
 
+//this will handle the routing to the scheduling page
+//router.route('/schedule/').get()
+
 module.exports = router;
