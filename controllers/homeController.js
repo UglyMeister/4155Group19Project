@@ -51,6 +51,7 @@ exports.userLogin = async (req, res, next) => {
             if (employer != null && employer.pass == password) {
                 req.session.profile = employer;
                 req.session.type = 'employer';
+                req.session.loggedIn = true;
                 console.log(req.session.profile);
                 req.session.save();
                 res.redirect('/employer/');
