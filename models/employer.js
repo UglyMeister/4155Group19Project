@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://appControl:control1@ds145704.mlab.com:45704/heroku_r2hv5571', {
-    useNewUrlParser: true
+    useNewUrlParser: true, useFindAndModify: false
 });
 //var db = mongoose.connection;
 

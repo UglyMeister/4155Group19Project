@@ -208,9 +208,15 @@ exports.employeeUpdateSkill = async (req, res, next) => {
             await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
                 $push: { skillIDs: req.query.skillID }
             });
+            await SkillModel.findByIdAndUpdate(req.query.skillID, {
+                $push: { userIDs: req.session.profile._id }
+            });
         } else {
             await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
                 $pull: { skillIDs: req.query.skillID }
+            });
+            await SkillModel.findByIdAndUpdate(req.query.skillID, {
+                $pull: { userIDs: req.session.profile._id }
             });
         }
 
