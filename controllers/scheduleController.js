@@ -22,7 +22,6 @@ exports.generateSchedule = async (req, res, next) => {
         var currentMembers = req.session.currentGroup.memberIDs;
 
         async function daySchedule(day) {
-            var counter = 0;
             var employeeDay = [];
             const dayShift = day + 'Shift';
             const dayAvail = day + 'Avail';
@@ -41,8 +40,8 @@ exports.generateSchedule = async (req, res, next) => {
                         ]
                     })
                 );
-                counter++;
             }
+            return employeeDay;
         }
 
         const monSchedule = daySchedule(days[0]);
