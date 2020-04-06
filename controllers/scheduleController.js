@@ -20,7 +20,7 @@ exports.generateSchedule = async (req, res, next) => {
         const days = ['mon', 'tues', 'wed', 'th', 'fri', 'satur', 'sun'];
         var currentSkills = req.session.currentGroup.skillIDs;
         var currentMembers = req.session.currentGroup.memberIDs;
-
+        console.log('test');
         async function daySchedule(day) {
             var employeeDay = [];
             const dayShift = day + 'Shift';
@@ -78,4 +78,3 @@ exports.showScheduleMaker = async (req, res, next) => {
         console.log(e);
     }
 };
-
