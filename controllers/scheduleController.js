@@ -20,12 +20,17 @@ exports.generateSchedule = async (req, res, next) => {
         const days = ['mon', 'tues', 'wed', 'th', 'fri', 'satur', 'sun'];
         var currentSkills = req.session.currentGroup.skillIDs;
         var currentMembers = req.session.currentGroup.memberIDs;
-        console.log('test');
+
         async function daySchedule(day) {
+            var currentSkills = req.session.currentGroup.skillIDs;
             var employeeDay = [];
             const dayShift = day + 'Shift';
             const dayAvail = day + 'Avail';
-            for (const skill in currentSkills) {
+            for (var skillID in currentSkills) {
+                const skill = await SkillModel.findById(currentSkills[skillID]);
+                console.log(skill.userIDs);
+                console.log();
+                console.log([dayAvail[0]]);
                 console.log(skill[dayShift[0]]);
                 employeeDay.push(
                     await EmployeeModel.find({
@@ -41,6 +46,7 @@ exports.generateSchedule = async (req, res, next) => {
                     })
                 );
             }
+            console.log(employeeDay);
             return employeeDay;
         }
 
