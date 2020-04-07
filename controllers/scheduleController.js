@@ -44,11 +44,6 @@ exports.generateSchedule = async (req, res, next) => {
                         $and: [
                             { _id: { $in: skill.userIDs } },
                             {
-                                [employeeStartHours]: {
-                                    $gte: skillStartHoursMinus
-                                }
-                            },
-                            {
                                 [employeeStartHours]: { $lte: skillStartHoursPlus }
                             },
                             { [employeeStartHalf]: skillStartHalf },
@@ -56,9 +51,6 @@ exports.generateSchedule = async (req, res, next) => {
                                 [employeeEndHours]: {
                                     $gte: skillEndHoursMinus
                                 }
-                            },
-                            {
-                                [employeeEndHours]: { $lte: skillEndHoursPlus }
                             },
                             { [employeeEndHalf]: skillEndHalf }
                         ]
