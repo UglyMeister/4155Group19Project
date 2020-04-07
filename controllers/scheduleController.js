@@ -17,7 +17,7 @@ const SkillModel = require('./../models/skill');
 exports.generateSchedule = async (req, res, next) => {
     //start building the algorithm here
     try {
-        const days = ['mon', 'tues', 'wed', 'th', 'fri', 'satur', 'sun'];
+        const days = ['mon', 'tue', 'wed', 'th', 'fri', 'sat', 'sun'];
         var currentSkills = req.session.currentGroup.skillIDs;
         var currentMembers = req.session.currentGroup.memberIDs;
 
@@ -28,35 +28,53 @@ exports.generateSchedule = async (req, res, next) => {
             const dayAvail = day + 'Avail';
             for (var skillID in currentSkills) {
                 const skill = await SkillModel.findById(currentSkills[skillID]);
-                console.log(skill.userIDs);
-                console.log();
-                console.log([dayAvail[0]]);
-                console.log(skill[dayShift[0]]);
+                const employeeStartHours = [dayAvail] + '.0';
+                const employeeStartHalf = [dayAvail] + '.2';
+                const employeeEndHours = [dayAvail] + '.3';
+                const employeeEndHalf = [dayAvail] + '.5';
+                const skillStartHalf = [skill[dayShift][2]];
+                const skillEndHalf = [skill[dayShift][5]];
+                const skillStartHoursPlus = parseInt([skill[dayShift][0]]) + 2;
+                const skillStartHoursMinus = [skill[dayShift][0]] - 2;
+                const skillEndHoursMinus = [skill[dayShift][3]] - 2;
+                const skillEndHoursPlus = parseInt([skill[dayShift][3]]) + 2;
+
                 employeeDay.push(
                     await EmployeeModel.find({
                         $and: [
                             { _id: { $in: skill.userIDs } },
-                            { [dayAvail[0]]: { $gte: skill[dayShift[0]] - 2 } },
-                            { [dayAvail[0]]: { $lte: skill[dayShift[0]] + 2 } },
-                            { [dayAvail[2]]: { $eq: skill[dayShift[2]] } },
-                            { [dayAvail[3]]: { $gte: skill[dayShift[3]] - 2 } },
-                            { [dayAvail[3]]: { $lte: skill[dayShift[3]] + 2 } },
-                            { [dayAvail[5]]: { $eq: skill[dayShift[5]] } }
+                            {
+                                [employeeStartHours]: {
+                                    $gte: skillStartHoursMinus
+                                }
+                            },
+                            {
+                                [employeeStartHours]: { $lte: skillStartHoursPlus }
+                            },
+                            { [employeeStartHalf]: skillStartHalf },
+                            {
+                                [employeeEndHours]: {
+                                    $gte: skillEndHoursMinus
+                                }
+                            },
+                            {
+                                [employeeEndHours]: { $lte: skillEndHoursPlus }
+                            },
+                            { [employeeEndHalf]: skillEndHalf }
                         ]
                     })
                 );
             }
-            console.log(employeeDay);
             return employeeDay;
         }
-
-        const monSchedule = daySchedule(days[0]);
+        const monSchedule = await daySchedule(days[0]);
         const tueSchedule = daySchedule(days[1]);
         const wedSchedule = daySchedule(days[2]);
         const thSchedule = daySchedule(days[3]);
         const friSchedule = daySchedule(days[4]);
         const satSchedule = daySchedule(days[5]);
         const sunSchedule = daySchedule(days[6]);
+        console.log(monSchedule);
     } catch (e) {
         console.log(e);
     }
