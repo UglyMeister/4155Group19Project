@@ -5,9 +5,19 @@
         <%- include('./head.ejs') %>
     </head>
     <!--/body-->
+    <div class="a">
+
     <body>
         <!--/navigation-bars to know more about the company, contact details, cart of the user and the product details of the selected product-->
         <main>
+            <h3>Create A skill</h3>
+            <form action="/employer/group" method="post">
+                <label for="createSkill">
+                    <span>Skill Name:</span>
+                    <input type="text" id="name" name="name" />
+                    <button>Create Skill</button>
+                </label>
+            </form>            
             <h3>Skills</h3>
             <% if(skills.length < 1) { %>
             <span>No skills created please create some</span>
@@ -20,15 +30,8 @@
                 <button value='<%= skill._id %>' name='skillID'>remove</button>
             </form>
             <% }); %> <% } %>
-            <h3>Create A skill</h3>
-            <form action="/employer/group" method="post">
-                <label for="createSkill">
-                    <span>Skill Name:</span>
-                    <input type="text" id="name" name="name" />
-                    <button>Create Skill</button>
-                </label>
-            </form>
         </main>
         <footer id="footer"></footer>
     </body>
+    </div>
 </html>
