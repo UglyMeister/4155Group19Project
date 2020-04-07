@@ -38,7 +38,7 @@ exports.generateSchedule = async (req, res, next) => {
                 const skillStartHoursMinus = [skill[dayShift][0]] - 2;
                 const skillEndHoursMinus = [skill[dayShift][3]] - 2;
                 const skillEndHoursPlus = parseInt([skill[dayShift][3]]) + 2;
-
+                console.log(skillEndHoursMinus);
                 employeeDay.push(
                     await EmployeeModel.find({
                         $and: [
@@ -59,6 +59,7 @@ exports.generateSchedule = async (req, res, next) => {
             }
             return employeeDay;
         }
+        console.log(6 <= 15, 10 >= 8);
         const monSchedule = await daySchedule(days[0]);
         const tueSchedule = daySchedule(days[1]);
         const wedSchedule = daySchedule(days[2]);
