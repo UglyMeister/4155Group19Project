@@ -3,15 +3,14 @@ const EmployerModel = require('./../models/employer');
 const GroupModel = require('./../models/group');
 const SkillModel = require('./../models/skill');
 
-
 //THIS IS JUST FOR TESTING
 exports.showPage = async (req, res, next) => {
     const groupID = req.session.currentGroup._id;
-    var currentEmployees = await EmployeeModel.find({groupIDs: groupID});
+    var currentEmployees = await EmployeeModel.find({ groupIDs: groupID });
     console.log(currentEmployees[0].name);
 
-    res.render('schedule', {loggedIn: req.session.loggedIn, employeeList: currentEmployees});
-}
+    res.render('schedule', { loggedIn: req.session.loggedIn, employeeList: currentEmployees });
+};
 
 exports.generateSchedule = async (req, res, next) => {
     //start building the algorithm here
@@ -27,45 +26,35 @@ exports.generateSchedule = async (req, res, next) => {
             const dayAvail = day + 'Avail';
             for (var skillID in currentSkills) {
                 const skill = await SkillModel.findById(currentSkills[skillID]);
-                const employeeStartHours = [dayAvail] + '.0';
-                const employeeStartHalf = [dayAvail] + '.2';
-                const employeeEndHours = [dayAvail] + '.3';
-                const employeeEndHalf = [dayAvail] + '.5';
-                const skillStartHalf = [skill[dayShift][2]];
-                const skillEndHalf = [skill[dayShift][5]];
-                const skillStartHoursPlus = parseInt([skill[dayShift][0]]) + 2;
-                const skillStartHoursMinus = [skill[dayShift][0]] - 2;
-                const skillEndHoursMinus = [skill[dayShift][3]] - 2;
-                const skillEndHoursPlus = parseInt([skill[dayShift][3]]) + 2;
-                console.log(skillEndHoursMinus);
+                const employeeStart = [dayAvail] + '.0';
+                const employeeEnd = [dayAvail] + '.1';
+                const skillStart = skill[dayShift][0];
+                const skillEnd = skill[dayShift][1];
                 employeeDay.push(
                     await EmployeeModel.find({
                         $and: [
                             { _id: { $in: skill.userIDs } },
                             {
-                                [employeeStartHours]: { $lte: skillStartHoursPlus }
+                                [employeeStart]: { $lte: skillStart }
                             },
-                            { [employeeStartHalf]: skillStartHalf },
                             {
-                                [employeeEndHours]: {
-                                    $gte: skillEndHoursMinus
+                                [employeeEnd]: {
+                                    $gte: skillEnd
                                 }
-                            },
-                            { [employeeEndHalf]: skillEndHalf }
+                            }
                         ]
                     })
                 );
             }
             return employeeDay;
         }
-        console.log(6 <= 15, 10 >= 8);
         const monSchedule = await daySchedule(days[0]);
-        const tueSchedule = daySchedule(days[1]);
-        const wedSchedule = daySchedule(days[2]);
-        const thSchedule = daySchedule(days[3]);
-        const friSchedule = daySchedule(days[4]);
-        const satSchedule = daySchedule(days[5]);
-        const sunSchedule = daySchedule(days[6]);
+        const tueSchedule = await daySchedule(days[1]);
+        const wedSchedule = await daySchedule(days[2]);
+        const thSchedule = await daySchedule(days[3]);
+        const friSchedule = await daySchedule(days[4]);
+        const satSchedule = await daySchedule(days[5]);
+        const sunSchedule = await daySchedule(days[6]);
         console.log(monSchedule);
     } catch (e) {
         console.log(e);
