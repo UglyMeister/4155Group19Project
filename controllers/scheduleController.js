@@ -3,17 +3,12 @@ const EmployerModel = require('./../models/employer');
 const GroupModel = require('./../models/group');
 const SkillModel = require('./../models/skill');
 
-/*var x; //members*/
-//var y; //skills
-//var z; // the end product that will be returned
-//for (x in currentMembers) {
-//for (y in currentSkills) {
-////compare the time specified by the employer to the
-////availability of the employee
-////do this for all days and check whether the day is
-////enabled or not
-//}
-/*}*/
+
+//THIS IS JUST FOR TESTING
+exports.showPage = async (req, res, next) => {
+    res.render('schedule', {loggedIn: false});
+}
+
 exports.generateSchedule = async (req, res, next) => {
     //start building the algorithm here
     try {
