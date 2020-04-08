@@ -6,7 +6,11 @@ const SkillModel = require('./../models/skill');
 
 //THIS IS JUST FOR TESTING
 exports.showPage = async (req, res, next) => {
-    res.render('schedule', {loggedIn: false});
+    const groupID = req.session.currentGroup._id;
+    var currentEmployees = await EmployeeModel.find({groupIDs: groupID});
+    console.log(currentEmployees[0].name);
+
+    res.render('schedule', {loggedIn: req.session.loggedIn, employeeList: currentEmployees});
 }
 
 exports.generateSchedule = async (req, res, next) => {

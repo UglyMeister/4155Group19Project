@@ -8,5 +8,9 @@
 
         <body class="text-center">
         <p>This is just a test page, will put content here after we figure out DB issues</p>
+
+        <% for(var x in employeeList){ %>
+            <p>Name: <%= employeeList[x].name %></p>
+       <% } %>
     </body>
 </html>
