@@ -208,9 +208,15 @@ exports.employeeUpdateSkill = async (req, res, next) => {
             await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
                 $push: { skillIDs: req.query.skillID }
             });
+            await SkillModel.findByIdAndUpdate(req.query.skillID, {
+                $push: { userIDs: req.session.profile._id }
+            });
         } else {
             await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
                 $pull: { skillIDs: req.query.skillID }
+            });
+            await SkillModel.findByIdAndUpdate(req.query.skillID, {
+                $pull: { userIDs: req.session.profile._id }
             });
         }
 
@@ -234,49 +240,11 @@ exports.employeeUpdateSkill = async (req, res, next) => {
 //also work on making it impossible to enter in a larger number to start then end
 exports.updateAvailability = async (req, res, next) => {
     try {
-        var monAvail = [],
-            tueAvail = [],
-            wedAvail = [],
-            thAvail = [],
-            friAvail = [],
-            satAvail = [],
-            sunAvail = [];
-
-        function formatTimes(times) {
-            monAvail.push(times[0]);
-            tueAvail.push(times[1]);
-            wedAvail.push(times[2]);
-            thAvail.push(times[3]);
-            friAvail.push(times[4]);
-            satAvail.push(times[5]);
-            sunAvail.push(times[6]);
-        }
-
-        formatTimes(req.body.HoursStart);
-        formatTimes(req.body.MinutesStart);
-        formatTimes(req.body.HalfStart);
-        formatTimes(req.body.HoursEnd);
-        formatTimes(req.body.MinutesEnd);
-        formatTimes(req.body.HalfEnd);
-
-        req.body.monAvail = monAvail;
-        req.body.tueAvail = tueAvail;
-        req.body.wedAvail = wedAvail;
-        req.body.thAvail = thAvail;
-        req.body.friAvail = friAvail;
-        req.body.satAvail = satAvail;
-        req.body.sunAvail = sunAvail;
-
-        await EmployeeModel.findByIdAndUpdate(req.session.profile._id, req.body);
-        req.session.profile = await EmployeeModel.findById(req.session.profile._id);
-        req.session.save();
-        res.render('groupPage', {
-            jobCode: req.session.currentGroup._id,
-            type: req.session.type,
-            employee: req.session.profile,
-            skills: req.session.groupSkillNames,
-            name: req.session.currentGroup.name,
-            loggedIn: req.session.loggedIn
+        const test = await EmployeeModel.findByIdAndUpdate(req.session.profile._id, req.body);
+        res.status(200).json({
+            status: 'success',
+            message: req.session.currentGroup._id,
+            data: req.session
         });
     } catch (e) {
         console.log(e);

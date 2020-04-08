@@ -1,6 +1,7 @@
 const express = require('express');
 
 const userController = require('./../controllers/userController');
+const scheduleController = require('./../controllers/scheduleController');
 
 const router = express.Router();
 
@@ -13,5 +14,9 @@ router
     .get(userController.getUpdateSkillPage)
     .post(userController.deleteSkillPage)
     .patch(userController.updateSkillPage);
+
+//this will handle the routing to the scheduling page
+router.route('/group/schedule').get(scheduleController.generateSchedule);
+router.route('/group/employer').get(scheduleController.showPage);//FOR TESTING PURPOSES
 
 module.exports = router;
