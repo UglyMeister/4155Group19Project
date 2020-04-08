@@ -50,9 +50,9 @@ function timeHandler(day) {
     variableName = `${day}HoursEnd`;
     shift.push(window[variableName].value);
     variableName = `${day}MinutesEnd`;
-    shift[1] = parseInt(shift[0]) + parseInt(window[variableName].value);
+    shift[1] = parseInt(shift[1]) + parseInt(window[variableName].value);
     variableName = `${day}HalfEnd`;
-    shift[1] = parseInt(shift[0]) + parseInt(window[variableName].value);
+    shift[1] = parseInt(shift[1]) + parseInt(window[variableName].value);
     return shift;
 }
 
