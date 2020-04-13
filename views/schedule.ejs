@@ -3,14 +3,41 @@
     <head>
         <title>Smart Boss</title>
         <%- include('includes/head.ejs') %>
+        <%- include('../resources/functions.ejs') %>
     </head>
      <%- include('includes/nav.ejs') %>    
 
         <body class="text-center">
-        <p>This is just a test page, will put content here after we figure out DB issues</p>
+            <main>
+                <%const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];%>
+                <%const daySchedule = schedule[day];%>
+                <%let employeeMap = new Map();%>
+                <%let skillMap = new Map();%>
+                <%for(const employee in employees) {
+                    employeeMap.set(employee._id, false);    
+                }%>
+                <h1><%= days[day]%></h1>
+                <form method="post" action="" id="dayForm">
+                    <input type="hidden" name="day" value='<%= day%>'>
+                    <input type="hidden" name="length" value='<%= daySchedule.length%>'>
+                    <%for(var x = 0; x < daySchedule.length; x+=2) {%>
+                        <h1><%= daySchedule[x].name%></h2>
+                        <input type="hidden" value="<%= daySchedule[x].name%>" name="skillEmployee[<%- x%>]">
+                        <%var dayPart = daySchedule[x+1];%>
+                        <%for(var i = 0; i < dayPart.length; i++) {%>
+                            <label>
+                                <input type="radio" value="<%= dayPart[i].name%>" name="skillEmployee[<%- x + 1%>]">
+                                <%= dayPart[i].name%>
+                            </label>
+                        <% } %>
+                    <% } %>
 
-        <% for(var x in employeeList){ %>
-            <p>Name: <%= employeeList[x].name %></p>
-       <% } %>
-    </body>
+                    <%if(day < 6) {%>
+                        <button type="submit" form="dayForm" value='<%= days[day]%>'><%= days[day+1]%>-></button>
+                    <%} else {%>
+                        <button type="submit" form="dayForm" value='Submit'>Generate Schedule</button>
+                    <% } %>
+                </form>
+            </main>
+        </body>
 </html>

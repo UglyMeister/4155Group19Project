@@ -94,3 +94,5 @@ function updateAvailability() {
         window.location = `/employee/group?groupID=${res.data.message}`;
     });
 }
+
+function updateDay() {}
