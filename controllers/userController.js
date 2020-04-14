@@ -204,15 +204,19 @@ exports.createSkill = async (req, res, next) => {
 
 function mail(message, employer, subjectEmail) {
     try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
+        let transporter = nodemailer.createTransport({
+            service: 'gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
             auth: {
                 user: 'smartboss10837@gmail.com',
                 pass: 'g9ERHTxCy8rHTJT'
             }
         });
+        console.log(transporter.options.host);
 
-        const mailOptions = {
+        let mailOptions = {
             from: 'smartboss10837@gmail.com',
             to: employer.email,
             subject: subjectEmail,
@@ -242,7 +246,7 @@ exports.employeeUpdateSkill = async (req, res, next) => {
             const skill = await SkillModel.findByIdAndUpdate(req.query.skillID, {
                 $push: { userIDs: req.session.profile._id }
             });
-            message = `Please check ${req.session.profile.name} they have added ${skill.name} to their skill set`;
+            message = `Please check ${req.session.profile.name} they have added ${skill.name} from their skill set`;
         } else {
             await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
                 $pull: { skillIDs: req.query.skillID }
@@ -250,13 +254,13 @@ exports.employeeUpdateSkill = async (req, res, next) => {
             const skill = await SkillModel.findByIdAndUpdate(req.query.skillID, {
                 $pull: { userIDs: req.session.profile._id }
             });
-            message = `Please check ${req.session.profile.name} they have removed ${skill.name} to their skill set`;
+            message = `Please check ${req.session.profile.name} they have removed ${skill.name} from their skill set`;
         }
 
         req.session.profile = await EmployeeModel.findById(req.session.profile._id);
 
         const groupOwner = await EmployerModel.findById(req.session.currentGroup.ownerID);
-        mail(message, groupOwner, 'Skill Change');
+        mail(message, groupOwner, `${req.session.profile.name} Skill Change`);
 
         req.session.save();
         res.render('groupPage', {
@@ -281,7 +285,7 @@ exports.updateAvailability = async (req, res, next) => {
         mail(
             `Please check ${req.session.profile.name} they have updated their availability`,
             employer,
-            'Availability Change'
+            `${req.session.profile.name} Availability Change`
         );
         res.status(200).json({
             status: 'success',
