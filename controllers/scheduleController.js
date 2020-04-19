@@ -128,6 +128,7 @@ exports.showScheduleMaker = async (req, res, next) => {
 exports.createExcel = async (req, res, next) => {
     try{
         //this is some test code to see how i could do sharing of the workbook
+        //https://www.youtube.com/watch?v=tKz_ryychBY
         var wb = xlsx.utils.book_new();
         wb.Props = {
             Title: "Learning how to use sheetjs",
@@ -140,7 +141,7 @@ exports.createExcel = async (req, res, next) => {
         var ws = xlsx.utils.aoa_to_sheet(data);
         wb.Sheets["Test Sheet"] = ws;
 
-        var wbout = xlsx.writeFile(wb, {bookType:'xlsx', type:'binary'});
+        var wbout = xlsx.writeFile(wb, {bookType:'xlsx', type:'file'});
         //this is the end of the test code
     } catch (e) {
         console.log(e);
