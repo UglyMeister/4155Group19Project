@@ -1,6 +1,8 @@
 const express = require('express');
 
 const homeController = require('./../controllers/homeController');
+//below line is for testing only, not production
+const scheduleController = require('./../controllers/scheduleController');
 
 const router = express.Router();
 
@@ -51,5 +53,7 @@ router.get('/logout', function(req,res,next) {
     console.log('redirect to index');
     res.redirect('/');
 });
+
+router.get('/workbook', scheduleController.createExcel);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const EmployeeModel = require('./../models/employee');
 const EmployerModel = require('./../models/employer');
 const GroupModel = require('./../models/group');
 const SkillModel = require('./../models/skill');
+const xlsx = require('xlsx');
 
 //THIS IS JUST FOR TESTING
 exports.showPage = async (req, res, next) => {
@@ -119,6 +120,28 @@ exports.showScheduleMaker = async (req, res, next) => {
             //NOT SURE YET IF THE ABOVE CODE IS NECESSARY, NEED TO DO MORE THINKING
             res.render('employer');
         }
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+exports.createExcel = async (req, res, next) => {
+    try{
+        //this is some test code to see how i could do sharing of the workbook
+        var wb = xlsx.utils.book_new();
+        wb.Props = {
+            Title: "Learning how to use sheetjs",
+            Subject: "Test file",
+            Author: "UglyMeister",
+            CreatedDate: new Date(2020,4,19)
+        };
+        wb.SheetNames.push("Test Sheet");
+        var data  = [['something', 'else']];
+        var ws = xlsx.utils.aoa_to_sheet(data);
+        wb.Sheets["Test Sheet"] = ws;
+
+        var wbout = xlsx.writeFile(wb, {bookType:'xlsx', type:'binary'});
+        //this is the end of the test code
     } catch (e) {
         console.log(e);
     }
