@@ -3,6 +3,8 @@ const EmployerModel = require('./../models/employer');
 const GroupModel = require('./../models/group');
 const SkillModel = require('./../models/skill');
 const xlsx = require('xlsx');
+const fs = require('fs');
+const tempfile = require('tempfile');
 
 //THIS IS JUST FOR TESTING
 exports.showPage = async (req, res, next) => {
@@ -139,11 +141,30 @@ exports.createExcel = async (req, res, next) => {
         wb.SheetNames.push("Test Sheet");
         var data  = [['something', 'else']];
         var ws = xlsx.utils.aoa_to_sheet(data);
-        wb.Sheets["Test Sheet"] = ws;
+        xlsx.utils.book_append_sheet(wb, ws, "Test");
 
-        var wbout = xlsx.writeFile(wb, {bookType:'xlsx', type:'file'});
+        xlsx.writeFile(wb, "TestExcel.xlsx");
+        res.render('index', {data:'', loggedIn: req.session.loggedIn});
+        //var wbout = xlsx.writeFile(wb, {bookType:'xlsx', type:'file'});
+
+        
         //this is the end of the test code
     } catch (e) {
         console.log(e);
     }
 };
+
+//found this function on the sheetjs docs, supposed to open a stream using filesystem that we can use to write to
+//may or may not use this, still trying to decide
+function process_RS(stream, cb){
+    var fname = tempfile('.sheetjs');
+    console.log(fname);
+    var ostream = fs.createWriteStream(fname);
+    stream.pipe(ostream);
+    ostream.on('finish', function(){
+        var workbook = xlsx.readFile(fname);
+        fs.unlinkSync(fname);
+        //could do something here
+        cb(workbook);
+    });
+}
