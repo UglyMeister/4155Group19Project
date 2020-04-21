@@ -25,12 +25,16 @@ exports.generateSchedule = async (req, res, next) => {
             var employeeDay = [];
             const dayShift = day + 'Shift';
             const dayAvail = day + 'Avail';
+            req.session.skillStart = [];
+            req.session.skillEnd = [];
             for (var skillID in currentSkills) {
                 const skill = await SkillModel.findById(currentSkills[skillID]);
                 const employeeStart = [dayAvail] + '.0';
                 const employeeEnd = [dayAvail] + '.1';
                 const skillStart = skill[dayShift][0];
                 const skillEnd = skill[dayShift][1];
+                req.session.skillStart.push(skillStart);
+                req.session.skillEnd.push(skillEnd);
                 employeeDay.push(skill);
                 employeeDay.push(
                     await EmployeeModel.find({
@@ -74,6 +78,8 @@ exports.generateSchedule = async (req, res, next) => {
 async function dayScheduleFormat(schedule) {
     const length = schedule.length;
     var day = [];
+    //var startEnd;
+    //day.push();
     for (var i = 0; i < length; i += 2) {
         var skillandUser = [];
         var test = `skillEmployee[${i}]`;
@@ -122,6 +128,9 @@ async function createSchedule(req) {
         for (const item in daySchedule) {
             data.push(daySchedule[item]);
         }
+        //data.push([[]]);//for formatting
+        data.push(["Start time: ", req.session.skillStart[i]]);
+        data.push(["End time: ", req.session.skillEnd[i]]);
         console.log(data);
         var ws = xlsx.utils.aoa_to_sheet(data);
         ws['!cols'] = [{ wch: 30 }, { wch: 30 }];
