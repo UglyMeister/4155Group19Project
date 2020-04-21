@@ -85,7 +85,7 @@ async function dayScheduleFormat(schedule) {
     return day;
 }
 
-exports.scheduleHandler = async (req, res) => {
+exports.scheduleHandler = async (req, res, next) => {
     if (req.body.day == 0) {
         req.session.finalizedSchedule = null;
         req.session.finalizedSchedule = [];
@@ -102,8 +102,34 @@ exports.scheduleHandler = async (req, res) => {
             loggedIn: req.session.loggedIn,
             day: day
         });
+    } else {
+        createSchedule(req);
     }
 };
+
+async function createSchedule(req) {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    var wb = xlsx.utils.book_new();
+    wb.Props = {
+        Title: `Schedule for ${req.session.currentGroup.name}`,
+        Subject: 'Daily Schedules',
+        Author: `${req.session.profile.name} and powered by SmartBoss`
+        //CreatedDate: new Date()
+    };
+    for (var i = 0; i < 7; i++) {
+        const daySchedule = req.session.finalizedSchedule[i];
+        var data = [];
+        for (const item in daySchedule) {
+            data.push(daySchedule[item]);
+        }
+        console.log(data);
+        var ws = xlsx.utils.aoa_to_sheet(data);
+        ws['!cols'] = [{ wch: 30 }, { wch: 30 }];
+        xlsx.utils.book_append_sheet(wb, ws, days[i]);
+    }
+    xlsx.writeFile(wb, 'Schedule.xlsx');
+    //const wbook = xlsx.write(wb, {booktype:'xlsx', type: 'binary'})
+}
 //might not need this section, will figure it out later, for now going to
 //work on the actual algorithm
 exports.showScheduleMaker = async (req, res, next) => {
@@ -128,26 +154,25 @@ exports.showScheduleMaker = async (req, res, next) => {
 };
 
 exports.createExcel = async (req, res, next) => {
-    try{
+    try {
         //this is some test code to see how i could do sharing of the workbook
         //https://www.youtube.com/watch?v=tKz_ryychBY
         var wb = xlsx.utils.book_new();
         wb.Props = {
-            Title: "Learning how to use sheetjs",
-            Subject: "Test file",
-            Author: "UglyMeister",
-            CreatedDate: new Date(2020,4,19)
+            Title: 'Learning how to use sheetjs',
+            Subject: 'Test file',
+            Author: 'UglyMeister',
+            CreatedDate: new Date(2020, 4, 19)
         };
-        wb.SheetNames.push("Test Sheet");
-        var data  = [['something', 'else']];
+        wb.SheetNames.push('Test Sheet');
+        var data = [['something', 'else']];
         var ws = xlsx.utils.aoa_to_sheet(data);
-        xlsx.utils.book_append_sheet(wb, ws, "Test");
+        xlsx.utils.book_append_sheet(wb, ws, 'Test');
 
-        xlsx.writeFile(wb, "TestExcel.xlsx");
-        res.render('index', {data:'', loggedIn: req.session.loggedIn});
+        xlsx.writeFile(wb, 'TestExcel.xlsx');
+        res.render('index', { data: '', loggedIn: req.session.loggedIn });
         //var wbout = xlsx.writeFile(wb, {bookType:'xlsx', type:'file'});
 
-        
         //this is the end of the test code
     } catch (e) {
         console.log(e);
@@ -156,12 +181,12 @@ exports.createExcel = async (req, res, next) => {
 
 //found this function on the sheetjs docs, supposed to open a stream using filesystem that we can use to write to
 //may or may not use this, still trying to decide
-function process_RS(stream, cb){
+function process_RS(stream, cb) {
     var fname = tempfile('.sheetjs');
     console.log(fname);
     var ostream = fs.createWriteStream(fname);
     stream.pipe(ostream);
-    ostream.on('finish', function(){
+    ostream.on('finish', function () {
         var workbook = xlsx.readFile(fname);
         fs.unlinkSync(fname);
         //could do something here
