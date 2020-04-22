@@ -4,6 +4,7 @@ const GroupModel = require('./../models/group');
 const SkillModel = require('./../models/skill');
 const xlsx = require('xlsx');
 const fs = require('fs');
+const mail = require('./../util/mail');
 const tempfile = require('tempfile');
 
 exports.generateSchedule = async (req, res, next) => {
