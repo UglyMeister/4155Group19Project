@@ -5,7 +5,6 @@ const SkillModel = require('./../models/skill');
 const xlsx = require('xlsx');
 const fs = require('fs');
 const mail = require('./../util/mail');
-const tempfile = require('tempfile');
 
 exports.generateSchedule = async (req, res, next) => {
     //start building the algorithm here
@@ -119,14 +118,6 @@ exports.scheduleHandler = async (req, res, next) => {
         mail.mail(message, employer, subject);
         res.redirect('/');
     }
-
-    //this is just my dumb way of trying to redirect while giving the program enough time to finish adding the entries to the file
-    /*
-    if(check){
-        setTimeout(function(){
-            res.redirect('/');
-        }, 6000);
-    }*/
 };
 
 function timeFormat(time) {
