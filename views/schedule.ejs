@@ -29,6 +29,7 @@
                         <%for(var i = 0; i < dayPart.length; i++) {%>
                             <label>
                                 <input type="radio" value="<%= dayPart[i].name%>" name="skillEmployee[<%- x + 1%>]">
+                                <input type="hidden" value="<%= dayPart[i]._id%>" name="employeeUsed[<%- x/4%>]">
                                 <%= dayPart[i].name%>
                             </label>
                         <% } %>

@@ -95,9 +95,12 @@ exports.scheduleHandler = async (req, res, next) => {
     if (req.body.day == 0) {
         req.session.finalizedSchedule = null;
         req.session.finalizedSchedule = [];
+        req.session.unusedEmployees = null;
+        req.session.unusedEmployees = [];
     }
     const day = parseInt(req.body.day) + 1;
     req.session.finalizedSchedule.push(await dayScheduleFormat(req.body));
+    req.session.unusedEmployees.push(await createBackupPerDay(req));
     req.session.save();
 
     if (day < 1) {
@@ -109,18 +112,18 @@ exports.scheduleHandler = async (req, res, next) => {
             day: day
         });
     } else {
-        createSchedule(req);
-        var date = new Date;
+        await createSchedule(req);
+        await createBackup(req);
+        var date = new Date();
         var employees = await EmployeeModel.find({
-            _id: {$in: req.session.currentGroup.memberIDs}
+            _id: { $in: req.session.currentGroup.memberIDs }
         });
-        console.log(employees);
         date = date.toString();
-        var message = "Email for schedule created on: " + date;
+        var message = 'Email for schedule created on: ' + date;
         var employer = req.session.profile;
-        var subject = "Email for schedule created on: " + date;
+        var subject = 'Email for schedule created on: ' + date;
         mail.mail(message, employer, subject);
-        for(m in employees){
+        for (m in employees) {
             mail.mail(message, employees[m], subject);
         }
         res.redirect('/');
@@ -159,8 +162,56 @@ function timeFormat(time) {
     }
 }
 
+//getting all employees in the group and initializing a map to keep track of who has been used
+//all starting as false will then change to true if found in req.body
+async function createBackupPerDay(req) {
+    const availableEmployees = req.session.currentGroup.memberIDs;
+    let usedMap = new Map();
+    for (const employee in availableEmployees) {
+        usedMap.set(availableEmployees[employee], false);
+    }
+    const length = req.body.length;
+    var temp;
+    for (var i = 0; i < length; i++) {
+        temp = `employeeUsed[${i}]`;
+        usedMap.set(req.body[temp], true);
+    }
+    unusedEmployeeIds = [];
+    usedMap.forEach(function (value, key, map) {
+        if (!value) {
+            unusedEmployeeIds.push(key);
+        }
+    });
+    return unusedEmployeeIds;
+}
+
+async function createBackup(req) {
+    fs.unlinkSync('./backup.xlsx'); //clear out the previous workbook before writing the new one
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    var wb = xlsx.utils.book_new();
+    wb.Props = {
+        Title: `Schedule for ${req.session.currentGroup.name}`,
+        Subject: 'Daily Schedules',
+        Author: `${req.session.profile.name} and powered by SmartBoss`
+        //CreatedDate: new Date()
+    };
+    for (var i = 0; i < 1; i++) {
+        const employees = await EmployeeModel.find({
+            _id: { $in: req.session.unusedEmployees[i] }
+        });
+        var data = [];
+        for (const i in employees) {
+            const skills = await SkillsModel.find({ _id: { $in: req.session.unusedEmployees[i] } });
+            data.push([[employees[i]], skills]);
+        }
+        var ws = xlsx.utils.aoa_to_sheet(data);
+        xlsx.utils.book_append_sheet(wb, ws, days[i]);
+    }
+    xlsx.writeFile(wb, 'backup.xlsx');
+}
+
 async function createSchedule(req) {
-    fs.unlinkSync('./Schedule.xlsx');//clear out the previous workbook before writing the new one
+    fs.unlinkSync('./Schedule.xlsx'); //clear out the previous workbook before writing the new one
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const shifts = [
         'monShift',
@@ -190,5 +241,3 @@ async function createSchedule(req) {
     }
     xlsx.writeFile(wb, 'Schedule.xlsx');
 }
-
-

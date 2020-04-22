@@ -12,7 +12,6 @@ exports.mail = function (message, employer, subjectEmail) {
                 pass: 'g9ERHTxCy8rHTJT'
             }
         });
-        console.log(transporter.options.host);
 
         let mailOptions = {
             from: 'smartboss10837@gmail.com',
