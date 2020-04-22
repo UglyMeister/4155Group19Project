@@ -16,8 +16,6 @@ exports.generateSchedule = async (req, res, next) => {
     //start building the algorithm here
     try {
         const days = ['mon', 'tue', 'wed', 'th', 'fri', 'sat', 'sun'];
-        var currentSkills = req.session.currentGroup.skillIDs;
-        var currentMembers = req.session.currentGroup.memberIDs;
 
         async function daySchedule(day) {
             var currentSkills = req.session.currentGroup.skillIDs;
@@ -30,6 +28,7 @@ exports.generateSchedule = async (req, res, next) => {
                 const employeeEnd = [dayAvail] + '.1';
                 const skillStart = skill[dayShift][0];
                 const skillEnd = skill[dayShift][1];
+                employeeDay.push(skill);
                 employeeDay.push(
                     await EmployeeModel.find({
                         $and: [
@@ -48,19 +47,60 @@ exports.generateSchedule = async (req, res, next) => {
             }
             return employeeDay;
         }
-        const monSchedule = await daySchedule(days[0]);
-        const tueSchedule = await daySchedule(days[1]);
-        const wedSchedule = await daySchedule(days[2]);
-        const thSchedule = await daySchedule(days[3]);
-        const friSchedule = await daySchedule(days[4]);
-        const satSchedule = await daySchedule(days[5]);
-        const sunSchedule = await daySchedule(days[6]);
-        console.log(monSchedule);
+
+        req.session.schedule = [];
+
+        for (var i = 0; i < 7; i++) {
+            req.session.schedule.push(await daySchedule(days[i]));
+        }
+
+        req.session.save();
+
+        res.render('schedule', {
+            schedule: req.session.schedule,
+            skills: req.session.groupSkillNames,
+            employees: req.session.groupEmployeeNames,
+            loggedIn: req.session.loggedIn,
+            day: 0
+        });
     } catch (e) {
         console.log(e);
     }
 };
 
+async function dayScheduleFormat(schedule) {
+    const length = schedule.length;
+    var day = [];
+    for (var i = 0; i < length; i += 2) {
+        var skillandUser = [];
+        var test = `skillEmployee[${i}]`;
+        skillandUser.push(schedule[test]);
+        var test = `skillEmployee[${i + 1}]`;
+        skillandUser.push(schedule[test]);
+        day.push(skillandUser);
+    }
+    return day;
+}
+
+exports.scheduleHandler = async (req, res) => {
+    if (req.body.day == 0) {
+        req.session.finalizedSchedule = null;
+        req.session.finalizedSchedule = [];
+    }
+    const day = parseInt(req.body.day) + 1;
+    req.session.finalizedSchedule.push(await dayScheduleFormat(req.body));
+    req.session.save();
+
+    if (day < 7) {
+        res.render('schedule', {
+            schedule: req.session.schedule,
+            skills: req.session.groupSkillNames,
+            employees: req.session.groupEmployeeNames,
+            loggedIn: req.session.loggedIn,
+            day: day
+        });
+    }
+};
 //might not need this section, will figure it out later, for now going to
 //work on the actual algorithm
 exports.showScheduleMaker = async (req, res, next) => {

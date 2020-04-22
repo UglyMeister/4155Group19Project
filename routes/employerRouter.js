@@ -16,7 +16,9 @@ router
     .patch(userController.updateSkillPage);
 
 //this will handle the routing to the scheduling page
-router.route('/group/schedule').get(scheduleController.generateSchedule);
-router.route('/group/employer').get(scheduleController.showPage);//FOR TESTING PURPOSES
+router
+    .route('/group/schedule')
+    .get(scheduleController.generateSchedule)
+    .post(scheduleController.scheduleHandler);
 
 module.exports = router;

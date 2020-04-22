@@ -2,6 +2,7 @@ const EmployeeModel = require('./../models/employee');
 const EmployerModel = require('./../models/employer');
 const GroupModel = require('./../models/group');
 const SkillModel = require('./../models/skill');
+const nodemailer = require('nodemailer');
 
 exports.getProfile = async (req, res, next) => {
     try {
@@ -33,7 +34,7 @@ exports.createJob = async (req, res, next) => {
     try {
         if (req.body != null && req.body.name.trim() != '') {
             const employer = req.session.profile;
-            req.body.ownerId = employer._id;
+            req.body.ownerID = employer._id;
             const newGroup = await GroupModel.create(req.body);
             req.session.groupNames.push(newGroup);
             await EmployerModel.findByIdAndUpdate(employer._id, {
@@ -201,26 +202,65 @@ exports.createSkill = async (req, res, next) => {
     }
 };
 
+function mail(message, employer, subjectEmail) {
+    try {
+        let transporter = nodemailer.createTransport({
+            service: 'gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: 'smartboss10837@gmail.com',
+                pass: 'g9ERHTxCy8rHTJT'
+            }
+        });
+        console.log(transporter.options.host);
+
+        let mailOptions = {
+            from: 'smartboss10837@gmail.com',
+            to: employer.email,
+            subject: subjectEmail,
+            text: message
+        };
+
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 //needs fixing using a patch through employee group page
 exports.employeeUpdateSkill = async (req, res, next) => {
     try {
+        let message;
         if (req.query.skillUpdate == 'add') {
             await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
                 $push: { skillIDs: req.query.skillID }
             });
-            await SkillModel.findByIdAndUpdate(req.query.skillID, {
+            const skill = await SkillModel.findByIdAndUpdate(req.query.skillID, {
                 $push: { userIDs: req.session.profile._id }
             });
+            message = `Please check ${req.session.profile.name} they have added ${skill.name} from their skill set`;
         } else {
             await EmployeeModel.findByIdAndUpdate(req.session.profile._id, {
                 $pull: { skillIDs: req.query.skillID }
             });
-            await SkillModel.findByIdAndUpdate(req.query.skillID, {
+            const skill = await SkillModel.findByIdAndUpdate(req.query.skillID, {
                 $pull: { userIDs: req.session.profile._id }
             });
+            message = `Please check ${req.session.profile.name} they have removed ${skill.name} from their skill set`;
         }
 
         req.session.profile = await EmployeeModel.findById(req.session.profile._id);
+
+        const groupOwner = await EmployerModel.findById(req.session.currentGroup.ownerID);
+        mail(message, groupOwner, `${req.session.profile.name} Skill Change`);
 
         req.session.save();
         res.render('groupPage', {
@@ -241,6 +281,12 @@ exports.employeeUpdateSkill = async (req, res, next) => {
 exports.updateAvailability = async (req, res, next) => {
     try {
         const test = await EmployeeModel.findByIdAndUpdate(req.session.profile._id, req.body);
+        const employer = await EmployerModel.findById(req.session.currentGroup.ownerID);
+        mail(
+            `Please check ${req.session.profile.name} they have updated their availability`,
+            employer,
+            `${req.session.profile.name} Availability Change`
+        );
         res.status(200).json({
             status: 'success',
             message: req.session.currentGroup._id,
