@@ -106,10 +106,9 @@ exports.employeeJobPage = async (req, res, next) => {
             if (req.query != null) {
                 req.session.currentGroup = await GroupModel.findById(req.query.groupID);
             }
-            req.session.groupSkillNames = await SkillModel.find(
-                { _id: { $in: req.session.currentGroup.skillIDs } },
-                { name: 1 }
-            );
+            req.session.groupSkillNames = await SkillModel.find({
+                _id: { $in: req.session.currentGroup.skillIDs }
+            });
 
             req.session.profile = await EmployeeModel.findById(req.session.profile._id);
 
@@ -139,10 +138,9 @@ exports.employerJobPage = async (req, res, next) => {
             if (req.query.groupID != null) {
                 req.session.currentGroup = await GroupModel.findById(req.query.groupID);
             }
-            req.session.groupSkillNames = await SkillModel.find(
-                { _id: { $in: req.session.currentGroup.skillIDs } },
-                { name: 1 }
-            );
+            req.session.groupSkillNames = await SkillModel.find({
+                _id: { $in: req.session.currentGroup.skillIDs }
+            });
             req.session.groupEmployeeNames = await EmployeeModel.find(
                 { _id: { $in: req.session.currentGroup.memberIDs } },
                 { name: 1 }

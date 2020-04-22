@@ -6,15 +6,6 @@ const xlsx = require('xlsx');
 const fs = require('fs');
 const tempfile = require('tempfile');
 
-//THIS IS JUST FOR TESTING
-exports.showPage = async (req, res, next) => {
-    const groupID = req.session.currentGroup._id;
-    var currentEmployees = await EmployeeModel.find({ groupIDs: groupID });
-    console.log(currentEmployees[0].name);
-
-    res.render('schedule', { loggedIn: req.session.loggedIn, employeeList: currentEmployees });
-};
-
 exports.generateSchedule = async (req, res, next) => {
     //start building the algorithm here
     try {
@@ -51,8 +42,8 @@ exports.generateSchedule = async (req, res, next) => {
                         ]
                     })
                 );
-                employeeDay.push(skillStart);
-                employeeDay.push(skillEnd);
+                employeeDay.push(timeFormat(skillStart));
+                employeeDay.push(timeFormat(skillEnd));
             }
             return employeeDay;
         }
@@ -82,7 +73,7 @@ async function dayScheduleFormat(schedule) {
     var day = [];
     //var startEnd;
     //day.push();
-    var temp = [["Skill"], ["Employee Name"], ["Start Time"], ["End Time"]];
+    var temp = [['Skill'], ['Employee Name'], ['Start Time'], ['End Time']];
     day.push(temp);
     for (var i = 0; i < length; i += 4) {
         var skillandUser = [];
@@ -109,7 +100,7 @@ exports.scheduleHandler = async (req, res, next) => {
     req.session.finalizedSchedule.push(await dayScheduleFormat(req.body));
     req.session.save();
 
-    if (day < 7) {
+    if (day < 1) {
         res.render('schedule', {
             schedule: req.session.schedule,
             skills: req.session.groupSkillNames,
@@ -131,8 +122,49 @@ exports.scheduleHandler = async (req, res, next) => {
     }*/
 };
 
+function timeFormat(time) {
+    var half = 'am';
+    if (time >= 1200) {
+        time = time - 1200;
+        half = 'pm';
+    }
+    timeString = time.toString(10);
+    if (timeString.length == 4) {
+        if (timeString.substring(0, 2) == '0') {
+            return `12:${((timeString.substring(2, 4) / 100) * 60)
+                .toString(10)
+                .padEnd(2, '0')}${half}`;
+        }
+        return `${timeString.substring(0, 2)}:${((timeString.substring(2, 4) / 100) * 60)
+            .toString(10)
+            .padEnd(2, '0')}${half}`;
+    } else if (timeString.length == 3) {
+        if (timeString.substring(0, 1) == '0') {
+            return `12:${((timeString.substring(1, 3) / 100) * 60)
+                .toString(10)
+                .padEnd(2, '0')}${half}`;
+        }
+        return `${timeString.substring(0, 1)}:${((timeString.substring(1, 3) / 100) * 60)
+            .toString(10)
+            .padEnd(2, '0')}${half}`;
+    } else {
+        if (timeString.substring(0, 1) == '0') {
+            return `12:${((time / 100) * 60).toString(10).padEnd(2, '0')}${half}`;
+        }
+    }
+}
+
 async function createSchedule(req) {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const shifts = [
+        'monShift',
+        'tueShift',
+        'wedShift',
+        'thShift',
+        'friShift',
+        'satShift',
+        'sunShift'
+    ];
     var wb = xlsx.utils.book_new();
     wb.Props = {
         Title: `Schedule for ${req.session.currentGroup.name}`,
@@ -140,70 +172,19 @@ async function createSchedule(req) {
         Author: `${req.session.profile.name} and powered by SmartBoss`
         //CreatedDate: new Date()
     };
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 1; i++) {
         const daySchedule = req.session.finalizedSchedule[i];
         var data = [];
         for (const item in daySchedule) {
             data.push(daySchedule[item]);
         }
-        //data.push([[]]);//for formatting
-        console.log(data);
         var ws = xlsx.utils.aoa_to_sheet(data);
-        ws['!cols'] = [{ wch: 30 }, { wch: 30 }];
+        ws['!cols'] = [{ wch: 30 }, { wch: 30 }, { wch: 30 }];
         xlsx.utils.book_append_sheet(wb, ws, days[i]);
     }
     xlsx.writeFile(wb, 'Schedule.xlsx');
     return true;
-    //const wbook = xlsx.write(wb, {booktype:'xlsx', type: 'binary'})
 }
-//might not need this section, will figure it out later, for now going to
-//work on the actual algorithm
-exports.showScheduleMaker = async (req, res, next) => {
-    try {
-        if (req.session.profile) {
-            //don't even know if we need this page, might be better to just run the
-            //algorithm then find out whether or not the schedule can be made
-            if (req.query.groupId != null) {
-                console.log('group ID: ' + req.query.groupId);
-                req.session.currentGroup = await GroupModel.findById(req.query.groupID);
-            }
-            req.session.groupSkillNames = await SkillModel.find(
-                { _id: { $in: req.session.currentGroup.skillIDs } },
-                { name: 1 }
-            );
-            //NOT SURE YET IF THE ABOVE CODE IS NECESSARY, NEED TO DO MORE THINKING
-            res.render('employer');
-        }
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-exports.createExcel = async (req, res, next) => {
-    try {
-        //this is some test code to see how i could do sharing of the workbook
-        //https://www.youtube.com/watch?v=tKz_ryychBY
-        var wb = xlsx.utils.book_new();
-        wb.Props = {
-            Title: 'Learning how to use sheetjs',
-            Subject: 'Test file',
-            Author: 'UglyMeister',
-            CreatedDate: new Date(2020, 4, 19)
-        };
-        wb.SheetNames.push('Test Sheet');
-        var data = [['something', 'else']];
-        var ws = xlsx.utils.aoa_to_sheet(data);
-        xlsx.utils.book_append_sheet(wb, ws, 'Test');
-
-        xlsx.writeFile(wb, 'TestExcel.xlsx');
-        res.render('index', { data: '', loggedIn: req.session.loggedIn });
-        //var wbout = xlsx.writeFile(wb, {bookType:'xlsx', type:'file'});
-
-        //this is the end of the test code
-    } catch (e) {
-        console.log(e);
-    }
-};
 
 //found this function on the sheetjs docs, supposed to open a stream using filesystem that we can use to write to
 //may or may not use this, still trying to decide

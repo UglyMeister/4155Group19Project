@@ -20,9 +20,11 @@
                 <form method="post" action="" id="dayForm">
                     <input type="hidden" name="day" value='<%= day%>'>
                     <input type="hidden" name="length" value='<%= daySchedule.length%>'>
-                    <%for(var x = 0; x < daySchedule.length; x+=2) {%>
+                    <%for(var x = 0; x < daySchedule.length; x+=4) {%>
                         <h1><%= daySchedule[x].name%></h2>
                         <input type="hidden" value="<%= daySchedule[x].name%>" name="skillEmployee[<%- x%>]">
+                        <input type="hidden" value="<%= daySchedule[x+2]%>" name="skillEmployee[<%- x + 2%>]">
+                        <input type="hidden" value="<%= daySchedule[x+3]%>" name="skillEmployee[<%- x + 3%>]">
                         <%var dayPart = daySchedule[x+1];%>
                         <%for(var i = 0; i < dayPart.length; i++) {%>
                             <label>
