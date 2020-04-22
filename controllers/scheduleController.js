@@ -110,7 +110,13 @@ exports.scheduleHandler = async (req, res, next) => {
             day: day
         });
     } else {
-        check = createSchedule(req);
+        createSchedule(req);
+        var date = new Date;
+        date = date.toString();
+        var message = "Email for schedule created on: " + date;
+        var employer = req.session.profile;
+        var subject = "Email for schedule created on: " + date;
+        mail.mail(message, employer, subject);
         res.redirect('/');
     }
 
@@ -156,6 +162,7 @@ function timeFormat(time) {
 }
 
 async function createSchedule(req) {
+    fs.unlinkSync('./Schedule.xlsx');//clear out the previous workbook before writing the new one
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const shifts = [
         'monShift',
@@ -184,20 +191,6 @@ async function createSchedule(req) {
         xlsx.utils.book_append_sheet(wb, ws, days[i]);
     }
     xlsx.writeFile(wb, 'Schedule.xlsx');
-    return true;
 }
 
-//found this function on the sheetjs docs, supposed to open a stream using filesystem that we can use to write to
-//may or may not use this, still trying to decide
-function process_RS(stream, cb) {
-    var fname = tempfile('.sheetjs');
-    console.log(fname);
-    var ostream = fs.createWriteStream(fname);
-    stream.pipe(ostream);
-    ostream.on('finish', function () {
-        var workbook = xlsx.readFile(fname);
-        fs.unlinkSync(fname);
-        //could do something here
-        cb(workbook);
-    });
-}
+

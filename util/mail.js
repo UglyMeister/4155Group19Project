@@ -18,7 +18,10 @@ exports.mail = function (message, employer, subjectEmail) {
             from: 'smartboss10837@gmail.com',
             to: employer.email,
             subject: subjectEmail,
-            text: message
+            text: message,
+            attachments: {
+                path: './Schedule.xlsx'
+            }
         };
 
         transporter.sendMail(mailOptions, function (err, info) {
