@@ -121,7 +121,7 @@ exports.scheduleHandler = async (req, res, next) => {
         var subject = "Email for schedule created on: " + date;
         mail.mail(message, employer, subject);
         for(m in employees){
-            mail.mail(message, m, subject);
+            mail.mail(message, employees[m], subject);
         }
         res.redirect('/');
     }
