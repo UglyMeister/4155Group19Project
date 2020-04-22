@@ -51,6 +51,8 @@ exports.generateSchedule = async (req, res, next) => {
                         ]
                     })
                 );
+                employeeDay.push(skillStart);
+                employeeDay.push(skillEnd);
             }
             return employeeDay;
         }
@@ -80,11 +82,17 @@ async function dayScheduleFormat(schedule) {
     var day = [];
     //var startEnd;
     //day.push();
-    for (var i = 0; i < length; i += 2) {
+    var temp = [["Skill"], ["Employee Name"], ["Start Time"], ["End Time"]];
+    day.push(temp);
+    for (var i = 0; i < length; i += 4) {
         var skillandUser = [];
         var test = `skillEmployee[${i}]`;
         skillandUser.push(schedule[test]);
         var test = `skillEmployee[${i + 1}]`;
+        skillandUser.push(schedule[test]);
+        test = `skillEmployee[${i + 2}]`;
+        skillandUser.push(schedule[test]);
+        test = `skillEmployee[${i + 3}]`;
         skillandUser.push(schedule[test]);
         day.push(skillandUser);
     }
@@ -92,6 +100,7 @@ async function dayScheduleFormat(schedule) {
 }
 
 exports.scheduleHandler = async (req, res, next) => {
+    var check = false;
     if (req.body.day == 0) {
         req.session.finalizedSchedule = null;
         req.session.finalizedSchedule = [];
@@ -109,8 +118,17 @@ exports.scheduleHandler = async (req, res, next) => {
             day: day
         });
     } else {
-        createSchedule(req);
+        check = createSchedule(req);
+        res.redirect('/');
     }
+
+    //this is just my dumb way of trying to redirect while giving the program enough time to finish adding the entries to the file
+    /*
+    if(check){
+        setTimeout(function(){
+            res.redirect('/');
+        }, 6000);
+    }*/
 };
 
 async function createSchedule(req) {
@@ -129,14 +147,13 @@ async function createSchedule(req) {
             data.push(daySchedule[item]);
         }
         //data.push([[]]);//for formatting
-        data.push(["Start time: ", req.session.skillStart[i]]);
-        data.push(["End time: ", req.session.skillEnd[i]]);
         console.log(data);
         var ws = xlsx.utils.aoa_to_sheet(data);
         ws['!cols'] = [{ wch: 30 }, { wch: 30 }];
         xlsx.utils.book_append_sheet(wb, ws, days[i]);
     }
     xlsx.writeFile(wb, 'Schedule.xlsx');
+    return true;
     //const wbook = xlsx.write(wb, {booktype:'xlsx', type: 'binary'})
 }
 //might not need this section, will figure it out later, for now going to
