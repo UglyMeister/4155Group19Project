@@ -111,11 +111,18 @@ exports.scheduleHandler = async (req, res, next) => {
     } else {
         createSchedule(req);
         var date = new Date;
+        var employees = await EmployeeModel.find({
+            _id: {$in: req.session.currentGroup.memberIDs}
+        });
+        console.log(employees);
         date = date.toString();
         var message = "Email for schedule created on: " + date;
         var employer = req.session.profile;
         var subject = "Email for schedule created on: " + date;
         mail.mail(message, employer, subject);
+        for(m in employees){
+            mail.mail(message, m, subject);
+        }
         res.redirect('/');
     }
 };
