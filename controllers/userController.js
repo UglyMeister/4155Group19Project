@@ -225,7 +225,7 @@ exports.employeeUpdateSkill = async (req, res, next) => {
         req.session.profile = await EmployeeModel.findById(req.session.profile._id);
 
         const groupOwner = await EmployerModel.findById(req.session.currentGroup.ownerID);
-        mail.mail(message, groupOwner, `${req.session.profile.name} Skill Change`);
+        mail.mail(message, groupOwner, `${req.session.profile.name} Skill Change`, false);
 
         req.session.save();
         res.render('groupPage', {
@@ -250,7 +250,8 @@ exports.updateAvailability = async (req, res, next) => {
         mail.mail(
             `Please check ${req.session.profile.name} they have updated their availability`,
             employer,
-            `${req.session.profile.name} Availability Change`
+            `${req.session.profile.name} Availability Change`,
+            false
         );
         res.status(200).json({
             status: 'success',

@@ -93,17 +93,15 @@ async function dayScheduleFormat(schedule) {
 exports.scheduleHandler = async (req, res, next) => {
     var check = false;
     if (req.body.day == 0) {
-        req.session.finalizedSchedule = null;
         req.session.finalizedSchedule = [];
-        req.session.unusedEmployees = null;
         req.session.unusedEmployees = [];
     }
     const day = parseInt(req.body.day) + 1;
     req.session.finalizedSchedule.push(await dayScheduleFormat(req.body));
-    req.session.unusedEmployees.push(await createBackupPerDay(req));
+    req.session.unusedEmployees.push(await createBackupPerDay(req, day - 1));
     req.session.save();
 
-    if (day < 1) {
+    if (day < 7) {
         res.render('schedule', {
             schedule: req.session.schedule,
             skills: req.session.groupSkillNames,
@@ -124,8 +122,12 @@ exports.scheduleHandler = async (req, res, next) => {
         var subject = 'Email for schedule created on: ' + date;
         mail.mail(message, employer, subject);
         for (m in employees) {
-            mail.mail(message, employees[m], subject);
+            mail.mail(message, employees[m], subject, './Schedule.xlsx');
         }
+        var message = 'Email for schedule backup created on: ' + date;
+        var employer = req.session.profile;
+        var subject = 'Email for schedule backup created on: ' + date;
+        mail.mail(message, employer, subject, './backup.xlsx');
         res.redirect('/');
     }
 };
@@ -161,50 +163,76 @@ function timeFormat(time) {
         }
     }
 }
-
-//getting all employees in the group and initializing a map to keep track of who has been used
-//all starting as false will then change to true if found in req.body
-async function createBackupPerDay(req) {
-    const availableEmployees = req.session.currentGroup.memberIDs;
-    let usedMap = new Map();
-    for (const employee in availableEmployees) {
-        usedMap.set(availableEmployees[employee], false);
-    }
-    const length = req.body.length;
-    var temp;
-    for (var i = 0; i < length; i++) {
-        temp = `employeeUsed[${i}]`;
-        usedMap.set(req.body[temp], true);
-    }
-    unusedEmployeeIds = [];
-    usedMap.forEach(function (value, key, map) {
-        if (!value) {
-            unusedEmployeeIds.push(key);
-        }
+//take in req and day as an int value as params
+//It then finds all employees and in first for loop removes any that have a zero difference between
+//and end availability if that is not the case then it populates all that are left in a map with the User's name as
+//the key and _id as their value.
+//
+//next for loop adds in all user's names from schedule.ejs with false values will override any keys that match
+//
+//final for loop iterates over map and any non-false valuse are added to the backup array of arrays
+async function createBackupPerDay(req, day) {
+    var backup = [];
+    backup.push([['Employee Name'], ['Start Time'], ['End Time']]);
+    const avail = [
+        'monAvail',
+        'tueAvail',
+        'wedAvail',
+        'thAvail',
+        'friAvail',
+        'satAvail',
+        'sunAvail'
+    ];
+    var unusedUsers = new Map();
+    const employees = await EmployeeModel.find({
+        _id: { $in: req.session.currentGroup.memberIDs }
     });
-    return unusedEmployeeIds;
+    for (var i = 0; i < employees.length; i++) {
+        const employee = employees[i];
+        const temp = `${avail[day]}`;
+        if (employee[temp][0] - employee[temp][1] == 0) {
+            employees.splice(i, 1);
+            i--;
+        } else {
+            unusedUsers.set(employee.name, employee._id);
+        }
+    }
+    for (var i = 1; i < req.body.length; i += 4) {
+        unusedUsers.set(req.body[`skillEmployee[${i}]`], false);
+    }
+    for (const [key, value] of unusedUsers.entries()) {
+        if (value) {
+            const employee = await EmployeeModel.findById(value);
+            backup.push([
+                [employee.name],
+                [timeFormat(employee[`${avail[day]}`][0])],
+                [timeFormat(employee[`${avail[day]}`][1])]
+            ]);
+        }
+    }
+    return backup;
 }
 
+//req as a param
+//This function creates the backup.xlsx file using the aoa in req.session.unusedEmployees
 async function createBackup(req) {
     fs.unlinkSync('./backup.xlsx'); //clear out the previous workbook before writing the new one
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     var wb = xlsx.utils.book_new();
     wb.Props = {
-        Title: `Schedule for ${req.session.currentGroup.name}`,
-        Subject: 'Daily Schedules',
+        Title: `Backup for ${req.session.currentGroup.name}`,
+        Subject: 'Daily Backups',
         Author: `${req.session.profile.name} and powered by SmartBoss`
         //CreatedDate: new Date()
     };
-    for (var i = 0; i < 1; i++) {
-        const employees = await EmployeeModel.find({
-            _id: { $in: req.session.unusedEmployees[i] }
-        });
+    for (var i = 0; i < 7; i++) {
+        const dayBackup = req.session.unusedEmployees[i];
         var data = [];
-        for (const i in employees) {
-            const skills = await SkillsModel.find({ _id: { $in: req.session.unusedEmployees[i] } });
-            data.push([[employees[i]], skills]);
+        for (const item in dayBackup) {
+            data.push(dayBackup[item]);
         }
         var ws = xlsx.utils.aoa_to_sheet(data);
+        ws['!cols'] = [{ wch: 30 }, { wch: 30 }, { wch: 30 }];
         xlsx.utils.book_append_sheet(wb, ws, days[i]);
     }
     xlsx.writeFile(wb, 'backup.xlsx');
@@ -213,15 +241,6 @@ async function createBackup(req) {
 async function createSchedule(req) {
     fs.unlinkSync('./Schedule.xlsx'); //clear out the previous workbook before writing the new one
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const shifts = [
-        'monShift',
-        'tueShift',
-        'wedShift',
-        'thShift',
-        'friShift',
-        'satShift',
-        'sunShift'
-    ];
     var wb = xlsx.utils.book_new();
     wb.Props = {
         Title: `Schedule for ${req.session.currentGroup.name}`,
@@ -229,7 +248,7 @@ async function createSchedule(req) {
         Author: `${req.session.profile.name} and powered by SmartBoss`
         //CreatedDate: new Date()
     };
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < 7; i++) {
         const daySchedule = req.session.finalizedSchedule[i];
         var data = [];
         for (const item in daySchedule) {
