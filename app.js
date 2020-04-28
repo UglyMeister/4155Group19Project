@@ -2,9 +2,7 @@
 //This app will control the main logic for the app as far as routing and loading pages, requests, and responses are concerned
 
 var createError = require('http-errors');
-var https = require('https');
 var express = require('express');
-var fs = require('fs');
 var port = process.env.PORT || 8080;
 
 var path = require('path');
@@ -62,15 +60,6 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-https.createServer({
-    key: 'ThisIsASecret',
-    cert: fs.readFileSync('smartboss.pfx')
-}, app)
-.listen(port, function(){
-    console.log('listening live');
-});
-/*
 app.listen(port, function () {
     console.log('listening live');
 });
-*/
