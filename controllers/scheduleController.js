@@ -239,7 +239,7 @@ async function createBackup(req) {
 }
 
 async function createSchedule(req) {
-    fs.unlinkSync('./Schedule.xlsx'); //clear out the previous workbook before writing the new one
+    //fs.unlinkSync('./Schedule.xlsx'); //clear out the previous workbook before writing the new one
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     var wb = xlsx.utils.book_new();
     wb.Props = {
